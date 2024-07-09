@@ -18,7 +18,8 @@ export const Navbar = () => {
           </Link>
           <Link to="/signup">
           <span className={`${navbarCSS.signup} ${navbarCSS.authButtons}`}>
-            Signup
+            <span>Signup</span>
+            <i className={`${"fa-solid fa-right-to-bracket"}`}></i>
           </span>
           </Link>
         </div>

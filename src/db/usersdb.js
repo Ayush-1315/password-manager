@@ -1,8 +1,8 @@
-export const generateRandomId = () => {
+ const generateRandomId = () => {
     return Math.random().toString(36).substr(2, 16);
 }
 
-const users = [
+export const users = [
     {
         username: 'ayushraj123',
         email: '123@gmail.com',

@@ -51,6 +51,9 @@ border:2px solid #20176A;
     text-shadow: 1px 0 0 black;
     border:2px solid #43E8EF;
 }
+.signup span {
+    margin-right: 0.4rem;
+}
 /* Media Queries */
 
 @media (min-width:600px) {
