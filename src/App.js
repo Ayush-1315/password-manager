@@ -6,6 +6,7 @@ import { Navbar } from "./frontend/components/navbar/navbar";
 import { LoginPage } from "./frontend/pages/LoginPage/loginPage";
 import { PrivateRoute } from "./frontend/components/privateRoute/privateRoute";
 import { Profile } from "./frontend/pages/ProfilePage/profilePage";
+import { ForgotPasswordPage } from "./frontend/pages/ForgotPasswordPage/forgotPasswordPage";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           }
         />
         <Route path="/search" element={<>Search here</>} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
         <Route path="/*" element={<>Oops</>} />
       </Routes>
     </div>
