@@ -10,19 +10,22 @@ export const LandingPage = () => {
   return (
     <>
       <div className={landingCSS.heroContainer}>
-          <div className={landingCSS.heroContent}>
+        <div className={landingCSS.heroContent}>
+          <p>
+            Your password
+            {/* <i className={`${landingCSS.displayingIcons} ${`fa-solid fa-lock`}`}></i> */}
+          </p>
+          <p>
+            {" "}
+            - is your <span>password.</span>
+          </p>
+          <p>
             <p>
-              Your password
-              {/* <i className={`${landingCSS.displayingIcons} ${`fa-solid fa-lock`}`}></i> */}
+              Keep your passwords in a secure private vault - and simple access
+              them with one click from all your devices.
             </p>
-            <p>
-              {" "}
-              - is your <span>password.</span>
-            </p>
-            <p>
-            <p>Keep your passwords in a secure private vault - and simple access them with one click from all your devices.</p>
-            </p>
-          </div>   
+          </p>
+        </div>
         <div>
           <img src={hero} alt="hero" />
         </div>

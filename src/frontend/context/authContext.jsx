@@ -31,7 +31,8 @@ export const AuthProvider = ({ children }) => {
               e?.response?.data?.message
           );
           break;
-
+          case 404: console.log(`Invalid credentials`);
+          break;
         default:
           console.log("Server Crashed");
           break;

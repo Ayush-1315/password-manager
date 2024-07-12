@@ -44,27 +44,80 @@ export const editUserProfile = async (
   }
 };
 
-export const sendForgotOTP=async(user)=>{
-  try{
-    const response=await axios.post(`${BASE_URL}/password-manager/forgot-password/send-otp`,{
-      user
-    })
+export const sendForgotOTP = async (user) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/password-manager/forgot-password/send-otp`,
+      {
+        user,
+      }
+    );
     return response;
-  }
-  catch(e){
+  } catch (e) {
     throw e;
   }
-}
+};
 
-export const resetPasswordService=async(user,otp,newPassword)=>{
-  try{
-    const response=await axios.post(`${BASE_URL}/password-manager/reset-password`,{
-      username:user,
-      newPassword,
-      otp
-    })
+export const resetPasswordService = async (user, otp, newPassword) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/password-manager/reset-password`,
+      {
+        username: user,
+        newPassword,
+        otp,
+      }
+    );
     return response;
-  }catch(e){
+  } catch (e) {
     throw e;
   }
-}
+};
+
+export const sendDeleteOTP = async (userId, email, username, token) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/password-manager/send-delete-otp/${userId}`,
+      {
+        email,
+        username,
+      },
+      {
+        headers: { authorization: token },
+      }
+    );
+    return response;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const authorizedProfileDelete = async (
+  userId,
+  email,
+  username,
+  password,
+  otp,
+  token
+) => {
+  try {
+    console.log(token)
+    const response = await axios.delete(
+      `${BASE_URL}/password-manager/authorize-delete/${userId}`,
+      {
+      
+       headers: { authorization: token },
+       data:{
+        email,
+        username,
+        password,
+        otp
+       }
+      },
+      
+    );
+    return response;
+  } catch (e) {
+    throw e;
+  }
+};
