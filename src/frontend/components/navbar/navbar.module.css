@@ -2,14 +2,15 @@
     display: flex;
     justify-content:space-between;
     padding:0.8rem 3rem;
-    /* outline: 2px solid red; */
-    /* border-bottom: 1px solid #FFFFFF; */
     background-color: transparent;
     margin: 0;
-    color:#43E8E1;
+    color:#41AF4D;
     position: sticky;
     top: 0;
+    width: 94vw;
     left: 0;
+    align-items: center;
+    z-index: 15;
 }
 .logoContainer{
     text-decoration: none;
@@ -22,18 +23,10 @@
     background-blend-mode: hue;
     height: 2.5rem;
 }
-.features{
-    display: none;
-    transition: all 0.5s;
-}
-.features:hover{
-    text-decoration: underline;
-}
+
 .navbarOptions{
     display: flex;
-    /* outline: 2px solid red; */
     width: 45%;
-    /* justify-content: space-between; */
     justify-content: flex-end;
     align-items: center;
 }
@@ -69,29 +62,88 @@ transition: all 0.2s ease;
 .signup span {
     margin-right: 0.4rem;
 }
+.menu{
+    position: absolute;
+    z-index: 10;
+    backdrop-filter: blur(4px) saturate(193%);
+  -webkit-backdrop-filter: blur(4px) saturate(193%);
+  background-color: rgba(23, 23, 25, 0.62);
+  border-radius: 0 0 12px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+    top: 4rem;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: 97.5vw;
+    align-items: flex-start;
+    padding: 0.5rem;
+    transition: opacity 0.5s  ease-in-out;
+}
+.menu span{
+    text-decoration: none;
+    padding: 1rem;
+    color: #FFFFFF;
+    width: 90%;
+    border-radius: 0.5rem;
+    text-align:left;
+    transition: all 0.2s ease-in-out;
+}
+.menu span:hover{
+    color: #41AF4D;
+    outline: 2px solid rgba(255, 255, 255, 0.125);
+}
+.menu.dropDown{
+    animation: dropDown 0.5s forwards;
+}
+.menu.waveOut{
+    animation: waveOut 0.5s forwards;
+}
+@keyframes dropDown{
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes waveOut {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+  }
+  
 /* Media Queries */
-
-@media (min-width:600px) {
-    .features{
-        display: block;
-    }
-    .startOptions{
-        min-width: 0;
-    }
+@media (min-width:320px) {
     .navbarOptions{
-        width:40%;
-        justify-content: space-between;
+        display: none;
+    }
+    .navbar{
+        padding: 0.8rem 1rem;
     }
 }
-
 @media (min-width:768px){
     .navbarOptions{
+        display: flex;
         width:30%;
+    }
+    .showMore{
+        display: none;
     }
 }
 @media (min-width:1024px){
     .navbarOptions{
         width:25%;
+    }
+    .navbar{
+        width: 96vw;
+        padding: 1rem 2rem;
     }
 }
 @media (min-width:1200px){

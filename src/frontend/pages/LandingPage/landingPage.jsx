@@ -15,7 +15,7 @@ export const LandingPage = () => {
     document.title = "Anzen | Password Keeper";
   }, []);
   return (
-    <>
+    <div className={landingCSS.hero}>
       <div className={landingCSS.heroContainer}>
         <h1>
           Take control of your digital security <br />
@@ -65,11 +65,11 @@ export const LandingPage = () => {
           <span>accounts.spotify.com</span>
           <div className={landingCSS.samplePassword}>
             <span>•••••••••</span>
-            <span><i class="fa-regular fa-eye"></i></span>
+            <span><i className="fa-regular fa-eye"></i></span>
           </div>
           <div className={landingCSS.sampleSuggestion}>
             <span>Strong Password</span>
-            <span><i class="fa-solid fa-square-check"></i></span>
+            <span><i className="fa-solid fa-square-check"></i></span>
           </div>
           <div className={landingCSS.passwordStatus}>
             <div className={landingCSS.passwordBar}></div>
@@ -81,6 +81,6 @@ export const LandingPage = () => {
           </p>
         </div>
       </div>
-    </>
+    </div>
   );
 };

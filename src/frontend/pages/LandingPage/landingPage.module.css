@@ -3,6 +3,9 @@
   --primary-color: #43e8e1;
   --background: #0f054ccc;
 }
+.hero{
+  overflow-y: auto;
+}
 .heroContainer {
   width: 100%;
 }
@@ -22,6 +25,8 @@
   background-color: #41af4d;
   padding: 0.5rem 1rem;
   border-radius: 5rem;
+  display: inline-block;
+  margin-bottom: 1rem;
 }
 .tryNow i {
   margin: 0 0.1rem;
