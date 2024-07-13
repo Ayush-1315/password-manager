@@ -1,14 +1,26 @@
 .navbar{
     display: flex;
     justify-content:space-between;
-    padding:0 0.5rem;
-    background-color: #20176A;
+    padding:0.8rem 3rem;
+    /* outline: 2px solid red; */
+    /* border-bottom: 1px solid #FFFFFF; */
+    background-color: transparent;
     margin: 0;
     color:#43E8E1;
+    position: sticky;
+    top: 0;
+    left: 0;
 }
-
+.logoContainer{
+    text-decoration: none;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
 .logo{
     background-blend-mode: hue;
+    height: 2.5rem;
 }
 .features{
     display: none;
@@ -35,21 +47,24 @@
     text-decoration: none;
 }
 .authButtons{
-    border-radius: 0.5rem;
+    border-radius: 10rem;
     padding:0.5rem 1rem;
 }
 .login{
-color:#43E8E1;
-border:2px solid #20176A;
+color:#FFFFFF;
+border:2px solid transparent;
+padding: 0.5rem 1.5rem;
+transition: all 0.2s ease;
 }
 .login:hover{
-    border:2px solid #43E8EF;
+    border:2px solid #41AF4D;
+    color: #41AF4D;
 }
 .signup{
     color:#FFFFFF;
-    background-color: #43E8E1;
-    text-shadow: 1px 0 0 black;
-    border:2px solid #43E8EF;
+    background-color: #41AF4D;
+    text-align: center;
+    border:2px solid #41AF4D;
 }
 .signup span {
     margin-right: 0.4rem;

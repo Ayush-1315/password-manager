@@ -1,0 +1,40 @@
+.toaster {
+  position: absolute;
+  top: 25px;
+  left: 50%;
+  background-color: #ffffff;
+  padding: 0;
+  width: fit-content;
+  color: #000000;
+  transition: opacity 0.5s ease;
+}
+
+@keyframes dropDown{
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes waveOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.toaster.dropDown {
+  animation: dropDown 0.5s forwards;
+}
+
+.toaster.waveOut {
+  animation: waveOut 0.5s forwards;
+}

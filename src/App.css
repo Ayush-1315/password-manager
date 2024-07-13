@@ -1,5 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
 .App {
   text-align: center;
+  font-family: "Noto Sans JP", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .App-logo {
@@ -37,7 +42,68 @@
   }
 }
 body{
-  background-color: #0f054c;
+  background-color: #131315;
   color:white;
+  overflow-y:hidden;
 }
+.blockContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+}
+.blocks{
+  /* outline: 2px solid red; */
+  width: calc(150%/5);
+  transform: rotate(45deg);
+  height: 100vh;
+  z-index: -1;
 
+}
+.blocks:first-child{
+  position: fixed;
+  top: -45%;
+  left: -10%;
+  background: #0E0F11;
+}
+.blocks:nth-child(2){
+  position: fixed;
+    top: -55%;
+    height: 200vh;
+    left: 4%;
+    background-color: #101113;
+}
+.blocks:nth-child(3){
+  height: 200vh;
+    top: -48%;
+    position: fixed;
+    left: 42%;
+    background-color: #151517;
+}
+.blocks:nth-child(4){
+  position: fixed;
+  top: -35%;
+  right: 2%;
+  height: 200vh;
+  background-color: #131416;
+}
+.blocks:last-child{
+  position: fixed;
+    bottom: -50%;
+    right: -15%;
+    height: 100vh;
+    background-color: #101214;
+}
+.glassCard {
+  backdrop-filter: blur(4px) saturate(193%);
+  -webkit-backdrop-filter: blur(4px) saturate(193%);
+  background-color: rgba(23, 23, 25, 0.62);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+.subGlasscard {
+  backdrop-filter: blur(19px) saturate(122%);
+  -webkit-backdrop-filter: blur(19px) saturate(122%);
+  background-color: rgba(69, 69, 72, 0.69);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}

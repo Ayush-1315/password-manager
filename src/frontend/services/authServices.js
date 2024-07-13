@@ -12,12 +12,14 @@ export const loginAuth = async (username, password) => {
   }
 };
 
-export const signupAuth = async (username, password, email) => {
+export const signupAuth = async (username, password, email,firstName,lastName) => {
   try {
     const response = await axios.post(`${BASE_URL}/password-manager/signup`, {
       username,
       password,
       email,
+      firstName,
+      lastName
     });
     return response;
   } catch (e) {

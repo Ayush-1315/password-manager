@@ -101,20 +101,59 @@ export const authorizedProfileDelete = async (
   token
 ) => {
   try {
-    console.log(token)
+    console.log(token);
     const response = await axios.delete(
       `${BASE_URL}/password-manager/authorize-delete/${userId}`,
       {
-      
-       headers: { authorization: token },
-       data:{
-        email,
+        headers: { authorization: token },
+        data: {
+          email,
+          username,
+          password,
+          otp,
+        },
+      }
+    );
+    return response;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const userAvailabilityService = async (username) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/password-manager/check-username`,
+      {
+        username,
+      }
+    );
+    return response;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const updatePasswordService = async (
+  userId,
+  username,
+  password,
+  newPassword,
+  token
+) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/password-manager/update-password/${userId}`,
+      {
         username,
         password,
-        otp
-       }
+        newPassword,
       },
-      
+      {
+        headers: {
+          authorization: token,
+        },
+      }
     );
     return response;
   } catch (e) {

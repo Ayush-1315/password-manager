@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const DeleteProfile = ({setDeleteData}) => {
+export const DeleteProfile = ({setDeleteData,handleCancel}) => {
   const [formData, setFormData] = useState({
     OTP: "",
     password: "",
@@ -35,6 +35,7 @@ export const DeleteProfile = ({setDeleteData}) => {
       <label htmlFor="password">Confirm Password</label>
       <input type="password" placeholder="Confirm Password" onChange={e=>changeHandler('password',e.target.value)}/>
       <button disabled={!formValidator?.OTP && !formValidator?.password}>Delete my account</button>
+      <button onClick={handleCancel}>Cancel</button>
     </form>
   );
 };

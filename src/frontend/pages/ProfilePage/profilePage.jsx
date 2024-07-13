@@ -4,25 +4,35 @@ import {
   authorizedProfileDelete,
   editUserProfile,
   sendDeleteOTP,
+  updatePasswordService,
   userProfile,
 } from "../../services/userServices";
 import { ProfileCard } from "../../components/profileCard/profilecard";
 import { EditProfile } from "../../components/editProfile/editProfile";
 import { DeleteProfile } from "../../components/deleteProfile/deleteProfile";
+import { UpdatePassword } from "../../components/updatePasswordForm/updatePasssword";
 
 export const Profile = () => {
+  const initialDeletOptions = {
+    userId: "",
+    username: "",
+    email: "",
+    password: "",
+    otp: "",
+    attempt: false,
+  };
   const { isLogin, logoffUser } = useAuth();
   const [userData, setUserData] = useState(null);
   const [editProfileForm, setEditProfileForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userTimeout, setUserTimeout] = useState(false);
   const [timer, setTimer] = useState(5);
-  const [deleteProfile, setDeleteProfile] = useState({
+  const [deleteProfile, setDeleteProfile] = useState({...initialDeletOptions});
+  const [updatePassword, setUpdatePasssword] = useState({
     userId: "",
     username: "",
-    email: "",
     password: "",
-    otp: "",
+    newPassword: "",
     attempt: false,
   });
   const timerIdRef = useRef(null);
@@ -33,12 +43,11 @@ export const Profile = () => {
         const token = isLogin?.token;
         const userId = isLogin?.user?.id;
         const res = await userProfile(userId, token);
-        console.log(res)
-        if (res.status === 200 && res.data?.data?.user?.id!=="") {
+        console.log(res);
+        if (res.status === 200 && res.data?.data?.user?.id !== "") {
           setUserData({ ...res?.data?.data?.user });
-        }
-        else{
-          logoffUser()
+        } else {
+          logoffUser();
         }
       } catch (e) {
         setUserData(false);
@@ -60,8 +69,7 @@ export const Profile = () => {
               }
             });
           }, 1000);
-        }
-        else if(e?.response?.status===404){
+        } else if (e?.response?.status === 404) {
           logoffUser();
         }
       } finally {
@@ -131,12 +139,27 @@ export const Profile = () => {
         otp,
         isLogin?.token
       );
-      if(response?.status===200){
+      if (response?.status === 200) {
         logoffUser();
+      } else {
+        console.log(response);
       }
-      else{
-        console.log(response)
-      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const passwordUpdate = async () => {
+    try {
+      const { userId, username, password, newPassword } = updatePassword;
+      const res = await updatePasswordService(
+        userId,
+        username,
+        password,
+        newPassword,
+        isLogin?.token
+      );
+      console.log(res);
     } catch (e) {
       console.log(e);
     }
@@ -169,12 +192,38 @@ export const Profile = () => {
                 onDelete={(userId, email, username) =>
                   deleteProfileOTP(userId, email, username)
                 }
+                onUpdatePassword={(userId, username) =>
+                  setUpdatePasssword((prev) => ({
+                    ...prev,
+                    userId,
+                    username,
+                    attempt: true,
+                  }))
+                }
               />
+              {updatePassword.attempt && (
+                <UpdatePassword
+                  handleSubmit={(password, newPassword) => {
+                    setUpdatePasssword((prev) => ({
+                      ...prev,
+                      password,
+                      newPassword,
+                    }));
+                    passwordUpdate();
+                  }}
+                  handleCancel={() =>
+                    setUpdatePasssword((prev) => ({ ...prev, attempt: false }))
+                  }
+                />
+              )}
               {deleteProfile.attempt && (
                 <DeleteProfile
                   setDeleteData={(otp, password) => {
                     setDeleteProfile((prev) => ({ ...prev, otp, password }));
-                    authorizeDeletProfile()
+                    authorizeDeletProfile();
+                  }}
+                  handleCancel={() => {
+                    setDeleteProfile({...initialDeletOptions});
                   }}
                 />
               )}

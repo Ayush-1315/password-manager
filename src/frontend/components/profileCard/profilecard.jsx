@@ -1,4 +1,4 @@
-export const ProfileCard = ({ userData, onEdit, onLogOff, onDelete}) => {
+export const ProfileCard = ({ userData, onEdit, onLogOff, onDelete,onUpdatePassword}) => {
   const {
     id,
     username,
@@ -60,6 +60,7 @@ export const ProfileCard = ({ userData, onEdit, onLogOff, onDelete}) => {
         <button onClick={onEdit}>Edit Profile</button>
         <button onClick={onLogOff}>Logoff</button>
         <button onClick={()=>onDelete(id,email,username)}>Delete Profile</button>
+        <button onClick={()=>onUpdatePassword(id,username)}>Update Password</button>
       </div>
     </>
   );

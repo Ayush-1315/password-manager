@@ -6,14 +6,17 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 
 import { AuthProvider } from "./frontend/context/authContext";
+import { ToasterProvider } from "./frontend/context/toasterContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <ToasterProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </ToasterProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
