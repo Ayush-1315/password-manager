@@ -18,11 +18,11 @@ export const LandingPage = () => {
     <div className={landingCSS.hero}>
       <div className={landingCSS.heroContainer}>
         <h1>
-          Take control of your digital security <br />
+          Take control of your digital security 
           with our password manager
         </h1>
         <p>
-          Collaboration is made easy with our cloud storage platform. <br /> You
+          Collaboration is made easy with our cloud storage platform.  You
           can easily access your passwords from anywhere with the security of
           Anzen Password Manager.
         </p>

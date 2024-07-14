@@ -61,12 +61,13 @@ export const Navbar = () => {
         )}
       </div>
     </div>
-    {showMenu && (
-          <div className={`${navbarCSS.menu} ${animationClass}`}>
+    { (
+          <div className={`${navbarCSS.menu} ${animationClass}`} style={{display:animationClass===""&&'none'}}>
             <span
               onClick={() => {
                 setShowMenu(false);
                 navigate("/login");
+                setAnimationClass("");
               }}
             >
               Login
@@ -75,6 +76,7 @@ export const Navbar = () => {
               onClick={() => {
                 setShowMenu(false);
                 navigate("/signup");
+                setAnimationClass("");
               }}
             >
               Signup
