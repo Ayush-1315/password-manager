@@ -12,7 +12,7 @@ export const Navbar = () => {
   return (
    <>
     <div className={navbarCSS.navbar}>
-      <NavLink to="/" className={navbarCSS.logoContainer}>
+      <NavLink to={isLogin?`/home`:`/`} className={navbarCSS.logoContainer}>
         <img src={logo} alt="Anzen-logo" className={navbarCSS.logo} />
         <span>Anzen</span>
       </NavLink>

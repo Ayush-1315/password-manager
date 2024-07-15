@@ -53,7 +53,6 @@ export const Login = ({ onSubmit, signupLink, forgotLink }) => {
       alert("Please enter valid credentials.");
     }
   };
-  console.log(focus);
   return (
     <div className={`${`glassCard`} ${loginFormCSS.loginForm}`}>
       <h2>Login</h2>
@@ -62,8 +61,8 @@ export const Login = ({ onSubmit, signupLink, forgotLink }) => {
           htmlFor="username"
           className={
             formData.username !== "" || focus.username
-              ? loginFormCSS.filled
-              : ""
+              ? `${loginFormCSS.filled} ${loginFormCSS.loginLabels}`
+              : loginFormCSS.loginLabels
           }
         >
           Username
@@ -88,8 +87,8 @@ export const Login = ({ onSubmit, signupLink, forgotLink }) => {
             htmlFor="password"
             className={
               formData.password !== "" || focus.password
-                ? loginFormCSS.filled
-                : ""
+                ? `${loginFormCSS.filled} ${loginFormCSS.loginLabels}`
+                : loginFormCSS.loginLabels
             }
           >
             Password
@@ -121,10 +120,12 @@ export const Login = ({ onSubmit, signupLink, forgotLink }) => {
             ></i>
           )}
         </div>
-        {formData?.password.trim().length > 0 &&
-          formData?.password.trim().length < 8 && (
-            <div>Password must be 8 characters long</div>
-          )}
+       <div>
+       {formData?.password.trim().length > 0 &&
+          formData?.password.trim().length < 8 ? (
+            'Password must be 8 characters long'
+          ):"‎ "}
+       </div>
         <button disabled={isLoading}>Login</button>
         <Link to={forgotLink}>Forgot Password ?</Link>
         <Link to={signupLink}>Create Account</Link>

@@ -18,6 +18,9 @@ body{
   overflow-y:auto;
   overflow-x: hidden;
 }
+textarea{
+  font-family: "Noto Sans JP", sans-serif;
+}
 .blockContainer {
   width: 100%;
   display: flex;

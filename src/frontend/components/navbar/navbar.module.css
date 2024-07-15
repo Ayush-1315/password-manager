@@ -11,6 +11,7 @@
   left: 0;
   align-items: center;
   z-index: 15;
+  height: 4vh;
 }
 .logoContainer {
   text-decoration: none;

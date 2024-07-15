@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import { AuthProvider } from "./frontend/context/authContext";
 import { ToasterProvider } from "./frontend/context/toasterContext";
+import { PasswordProvider } from "./frontend/context/passwordContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,7 +15,9 @@ root.render(
     <BrowserRouter>
       <ToasterProvider>
         <AuthProvider>
-          <App />
+          <PasswordProvider>
+            <App />
+          </PasswordProvider>
         </AuthProvider>
       </ToasterProvider>
     </BrowserRouter>

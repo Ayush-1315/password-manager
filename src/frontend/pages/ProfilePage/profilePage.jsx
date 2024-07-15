@@ -11,6 +11,7 @@ import { ProfileCard } from "../../components/profileCard/profilecard";
 import { EditProfile } from "../../components/editProfile/editProfile";
 import { DeleteProfile } from "../../components/deleteProfile/deleteProfile";
 import { UpdatePassword } from "../../components/updatePasswordForm/updatePasssword";
+import { useToaster } from "../../context/toasterContext";
 
 export const Profile = () => {
   const initialDeletOptions = {
@@ -22,12 +23,15 @@ export const Profile = () => {
     attempt: false,
   };
   const { isLogin, logoffUser } = useAuth();
+  const { setToasterData,toasterData } = useToaster();
   const [userData, setUserData] = useState(null);
   const [editProfileForm, setEditProfileForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userTimeout, setUserTimeout] = useState(false);
   const [timer, setTimer] = useState(5);
-  const [deleteProfile, setDeleteProfile] = useState({...initialDeletOptions});
+  const [deleteProfile, setDeleteProfile] = useState({
+    ...initialDeletOptions,
+  });
   const [updatePassword, setUpdatePasssword] = useState({
     userId: "",
     username: "",
@@ -71,13 +75,26 @@ export const Profile = () => {
           }, 1000);
         } else if (e?.response?.status === 404) {
           logoffUser();
+        } else {
+          console.log('New values')
+          setToasterData((prev) => ({
+            ...prev,
+            message: "Server Error",
+            status: "Error",
+            isNetwork: true,
+          }));
         }
       } finally {
         setIsLoading(false);
       }
     })();
     document.title = `Profile | Anzen`;
-  }, [isLogin, logoffUser]);
+  }, [isLogin, logoffUser,setToasterData]);
+  useEffect(()=>{
+    if(toasterData?.isNetwork){
+      logoffUser()
+    }
+  },[toasterData,logoffUser])
   const submitHandler = async (data) => {
     try {
       const id = isLogin?.user?.id;
@@ -223,7 +240,7 @@ export const Profile = () => {
                     authorizeDeletProfile();
                   }}
                   handleCancel={() => {
-                    setDeleteProfile({...initialDeletOptions});
+                    setDeleteProfile({ ...initialDeletOptions });
                   }}
                 />
               )}

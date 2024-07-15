@@ -7,7 +7,7 @@ import { useToaster } from "./toasterContext";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const { setToasterData } = useToaster();
+  const { setToasterData ,toasterData} = useToaster();
   const navigate = useNavigate();
 
   const [isLogin, setIsLogin] = useState(
@@ -62,11 +62,14 @@ export const AuthProvider = ({ children }) => {
     setIsLogin(false);
     localStorage.clear();
     navigate("/");
-    setToasterData((prev) => ({
-      ...prev,
-      message: "Logoff Success",
-      status: "success",
-    }));
+    console.log(toasterData)
+    if(!toasterData.isNetwork){
+      setToasterData((prev) => ({
+        ...prev,
+        message: "Logoff Success",
+        status: "success",
+      }));
+    }
   };
 
   const signupUser = async ({

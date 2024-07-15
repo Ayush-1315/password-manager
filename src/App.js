@@ -11,22 +11,24 @@ import { SignupPage } from "./frontend/pages/SignupPage/signupPage";
 import { Toaster } from "./frontend/components/toaster/toaster";
 import { useToaster } from "./frontend/context/toasterContext";
 import { Background } from "./frontend/components/background/background";
+import { BrowsePasswordPage } from "./frontend/pages/BrowsePasswordPage/browsePasswordPage";
+import { HomePage } from "./frontend/pages/Home/homePage";
 
 function App() {
-  const{toasterData}=useToaster();
+  const { toasterData } = useToaster();
   return (
     <div className="App">
-      <Toaster {...toasterData}/>
+      <Toaster {...toasterData} />
       <Navbar />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage/>} />
+        <Route path="/signup" element={<SignupPage />} />
         <Route
           path="/home"
           element={
             <PrivateRoute>
-              <>Home</>
+              <HomePage/>
             </PrivateRoute>
           }
         />
@@ -39,10 +41,18 @@ function App() {
           }
         />
         <Route path="/search" element={<>Search here</>} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route
+          path="/browse-passwords"
+          element={
+            <PrivateRoute>
+              <BrowsePasswordPage />
+            </PrivateRoute>
+          }
+        />
         <Route path="/*" element={<>Oops</>} />
       </Routes>
-      <Background/>
+      <Background />
     </div>
   );
 }
