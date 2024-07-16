@@ -7,6 +7,8 @@ import {
 import {
   addPasswordService,
   getPasswordsService,
+  updateAccountPasswordService,
+  viewPasswordService,
 } from "../services/paswordServices";
 import { useAuth } from "./authContext";
 import { useToaster } from "./toasterContext";
@@ -56,13 +58,17 @@ const {setToasterData}=useToaster();
         description,
         token
       );
-      if(response?.status===204){
+      if(response?.status===201){
         setToasterData(prev=>({
             ...prev,
             message:"Password Saved",
             status:"success"
         }))
+        if(passwordState.passwords.length%10!==0){
+          passwordDispatch({type:"ADD_PASSWORD",payload:response?.data?.data})
+        }
       }
+      
     } catch (e) {
       if(e.message==="Network Error"){
         setToasterData(prev=>({
@@ -74,8 +80,35 @@ const {setToasterData}=useToaster();
       }
     }
   };
+
+  const updatePassword=async(userId,passwordId,username,password,platform,description)=>{
+    try{
+      const response=await updateAccountPasswordService(userId,passwordId,isLogin?.token,platform,username,password,description);
+      if(response?.status===201){
+        passwordDispatch({type:"UPDATE_PASSWORD",payload:response?.data?.data})
+      }
+      else{
+        console.log(response)
+      }
+    }catch(e){
+      console.log(e);
+    }
+  }
+  const getPasswordInfo=async(userId,passwordId,accountPassword)=>{
+    try{
+      const response=await viewPasswordService(userId,passwordId,isLogin?.token,accountPassword);
+      if(response?.status===200){
+        return response?.data;
+      }
+      else{
+        console.log(response)
+      }
+    }catch(e){
+      console.log(e)
+    }
+  }
   return (
-    <PasswordContext.Provider value={{ passwordState, createPassword }}>
+    <PasswordContext.Provider value={{ passwordState, createPassword,updatePassword,getPasswordInfo }}>
       {children}
     </PasswordContext.Provider>
   );

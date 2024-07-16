@@ -9,7 +9,7 @@ export const addPasswordService = async (
   description,
   token
 ) => {
-  console.log(userId, platform, username, password, description, token);
+
   try {
     const response = await axios.post(
       `${BASE_URL}/passwords/add-password/${userId}`,
@@ -38,9 +38,9 @@ export const viewPasswordService = async (
   accountPassword
 ) => {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/password/password/${userId}/${passId}`,
-      { userPasswords: accountPassword },
+    const response = await axios.post(
+      `${BASE_URL}/passwords/password/${userId}/${passId}`,
+      { password: accountPassword },
       { headers: { Authorization: token } }
     );
     return response;
@@ -87,7 +87,7 @@ export const updateAccountPasswordService = async (
       `${BASE_URL}/passwords/update-password/${userId}/${passId}`,
       {
         username,
-        accountPassword,
+        accPassword:accountPassword,
         description,
         platform,
       },

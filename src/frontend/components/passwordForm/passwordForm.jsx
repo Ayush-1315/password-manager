@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 import passwordFormCSS from "./passwordForm.module.css";
-export const PasswordForm = ({ id, passwordBody, submitData, closeForm }) => {
+export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
   const initialData = {
-    id: null,
+    _id: null,
     username: "",
     password: "",
     platform: "",
@@ -17,7 +17,7 @@ export const PasswordForm = ({ id, passwordBody, submitData, closeForm }) => {
   };
 
   const [formData, setFormData] = useState(
-    id ? { ...passwordBody } : { ...initialData }
+    _id ? { ...passwordBody } : { ...initialData }
   );
   const [formValidator, setFormValidator] = useState({
     ...initialFormValidator,
@@ -45,10 +45,25 @@ export const PasswordForm = ({ id, passwordBody, submitData, closeForm }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const isValid = Object.values(formValidator).reduce(
-      (acc, curr) => (curr ? acc : false),
-      true
-    );
+    let isValid;
+    if (_id) {
+      isValid = Object.entries(formData).reduce((acc, curr) => {
+        if (curr[0] !== "description" && curr[0] !== "remindAfterDays") {
+          if (curr[1].trim().length > 0) {
+            return acc;
+          } else {
+            return false;
+          }
+        } else {
+          return acc;
+        }
+      }, true);
+    } else {
+      isValid = Object.values(formValidator).reduce(
+        (acc, curr) => (curr ? acc : false),
+        true
+      );
+    }
     if (isValid) {
       await submitData(formData);
       e.target.reset();
@@ -59,20 +74,20 @@ export const PasswordForm = ({ id, passwordBody, submitData, closeForm }) => {
     }
   };
   return (
-    <div className={passwordFormCSS.mainContainer} onClick={()=>closeForm()}>
+    <div className={passwordFormCSS.mainContainer} onClick={() => closeForm()}>
       <div
         className={`${`glassCard`} ${passwordFormCSS.formContainer}`}
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        <h2>{id ? "Manage Password" : "Create new Password"}</h2>
+        <h2>{_id ? "Manage Password" : "Create new Password"}</h2>
         <form
           onSubmit={(e) => submitHandler(e)}
           className={passwordFormCSS.form}
         >
           <span className={passwordFormCSS.idContainer}>
-            {id ? <i>ID</i> : "‎ "}
+            {_id ? <i>ID:{_id}</i> : "‎ "}
           </span>
           <div className={passwordFormCSS.fieldContainer}>
             <label
@@ -177,7 +192,7 @@ export const PasswordForm = ({ id, passwordBody, submitData, closeForm }) => {
               }
             />
           </div>
-          <button>Create</button>
+          <button>{_id ? "Update" : "Create"}</button>
         </form>
       </div>
     </div>

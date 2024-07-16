@@ -61,6 +61,8 @@ export const SignupForm = ({ checkAvailability, isAvailable, submitData }) => {
     if (allVerified) {
       await submitData(formData);
       e.target.reset();
+      setFormData(initialData);
+      setFormValidator(validatorData)
     }
     else{
         alert('Fill all fields accordingly')

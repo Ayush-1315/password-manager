@@ -13,6 +13,7 @@ import { useToaster } from "./frontend/context/toasterContext";
 import { Background } from "./frontend/components/background/background";
 import { BrowsePasswordPage } from "./frontend/pages/BrowsePasswordPage/browsePasswordPage";
 import { HomePage } from "./frontend/pages/Home/homePage";
+import { PasswordPage } from "./frontend/pages/PasswordPage/passwordPage";
 
 function App() {
   const { toasterData } = useToaster();
@@ -47,6 +48,14 @@ function App() {
           element={
             <PrivateRoute>
               <BrowsePasswordPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/:id/passwords/:passwordId"
+          element={
+            <PrivateRoute>
+              <PasswordPage />
             </PrivateRoute>
           }
         />
