@@ -1,31 +1,30 @@
-import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router";
+import passwordHolderCSS from "./password.module.css";
 export const PasswordHolder = ({
   _id,
   username,
   platform,
   description,
   userId,
-  handleEdit,
+  onDelete
 }) => {
+  const navigate = useNavigate();
+  const handleDelete=(e)=>{
+    e.stopPropagation();
+    onDelete()
+  }
   return (
-    <Link
+    <div
       to={`/${userId}/passwords/${_id}`}
-      style={{
-        border: `2px solid red`,
-        display: `inline-block`,
-        textDecoration: `none`,
-      }}
+      className={`${`glassCard`} ${passwordHolderCSS.card}`}
+      onClick={() => navigate(`/${userId}/passwords/${_id}`)}
     >
       <div>
         <h2>{username}</h2>
         <span>{platform}</span>
         <p>{description}</p>
-        <button
-                 >
-          Delete
-        </button>
+        <button onClick={e=>handleDelete(e)}>Delete</button>
       </div>
-    </Link>
+    </div>
   );
 };

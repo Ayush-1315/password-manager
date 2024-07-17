@@ -1,3 +1,4 @@
+import { searchPasswordService } from "../services/paswordServices";
 import { userAvailabilityService } from "../services/userServices";
 
 const debouncer = (callback, delay) => {
@@ -30,4 +31,6 @@ const userAvailableCheck = async (username) => {
   }
 };
 
+
 export const deboundedUserCheck = debouncer(userAvailableCheck, 1000);
+export const debouncedSearchPassword=debouncer(searchPasswordService,1000);

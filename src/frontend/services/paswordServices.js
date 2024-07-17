@@ -63,8 +63,9 @@ export const getPasswordsService = async (page, token, userId) => {
 
 export const searchPasswordService = async (search, userId, token) => {
   try {
+    console.log(search)
     const response = await axios.get(
-      `${BASE_URL}/passwords/passwords/${userId}?search=${search}`,
+      `${BASE_URL}/passwords/password/${userId}?search=${search}`,
       { headers: { Authorization: token } }
     );
     return response;
@@ -106,7 +107,7 @@ export const updateAccountPasswordService = async (
 export const deletePasswordService = async (userId, passId, token) => {
   try {
     const response = await axios.delete(
-      `${BASE_URL}/passwords/${userId}/${passId}`,
+      `${BASE_URL}/passwords/password/${userId}/${passId}`,
       {
         headers: {
           Authorization: token,

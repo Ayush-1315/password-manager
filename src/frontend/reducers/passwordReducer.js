@@ -33,6 +33,11 @@ export const passwordReducerFunction = (state, action) => {
         ...state,
         passwords: [...state.passwords, payload],
       };
+      case "SEARCH_PASSWORD":
+        return {
+          ...state,
+          passwordSearch:payload
+        }
     default:
       return state;
   }
