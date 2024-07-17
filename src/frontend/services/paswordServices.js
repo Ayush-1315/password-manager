@@ -9,7 +9,6 @@ export const addPasswordService = async (
   description,
   token
 ) => {
-
   try {
     const response = await axios.post(
       `${BASE_URL}/passwords/add-password/${userId}`,
@@ -61,12 +60,16 @@ export const getPasswordsService = async (page, token, userId) => {
   }
 };
 
-export const searchPasswordService = async (search, userId, token) => {
+export const searchPasswordService = async (
+  search,
+  userId,
+  token,
+  options = {}
+) => {
   try {
-    console.log(search)
     const response = await axios.get(
       `${BASE_URL}/passwords/password/${userId}?search=${search}`,
-      { headers: { Authorization: token } }
+      { headers: { Authorization: token }, signal: options.signal }
     );
     return response;
   } catch (e) {
@@ -88,7 +91,7 @@ export const updateAccountPasswordService = async (
       `${BASE_URL}/passwords/update-password/${userId}/${passId}`,
       {
         username,
-        accPassword:accountPassword,
+        accPassword: accountPassword,
         description,
         platform,
       },

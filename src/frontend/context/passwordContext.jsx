@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer, useRef } from "react";
 
 import {
   passwordReducerFunction,
@@ -21,16 +21,59 @@ export const PasswordProvider = ({ children }) => {
     passwordReducerFunction,
     initialPasswordState
   );
+  const latestRequestRef = useRef(null);
 
   const { setToasterData } = useToaster();
   const { isLogin } = useAuth();
   const { user, token } = isLogin;
   const { page, passwordSearch } = passwordState;
-  console.log(passwordState);
+
   useEffect(() => {
-    if (isLogin && passwordSearch==="") {
+    const searchPassword = async (search) => {
+      if (latestRequestRef.current) {
+        latestRequestRef.current.abort();
+      }
+      const controller = new AbortController();
+      latestRequestRef.current = controller;
+      try {
+        passwordDispatch({ type: "LOADING", payload: true });
+        const response = await debouncedSearchPassword(search, user.id, token, {
+          signal: controller.signal,
+        });
+        if (response?.status === 200) {
+          if (passwordSearch.length >= 1) {
+            passwordDispatch({
+              type: "SET_PASSWORDS",
+              payload: response?.data?.data,
+            });
+          }
+        }
+      } catch (e) {
+        if (e.name === "CanceledError") {
+          console.log("Request was cancelled");
+        } else {
+          console.log(e);
+        }
+      } finally {
+        if (latestRequestRef.current === controller) {
+          passwordDispatch({ type: "LOADING", payload: false });
+        }
+      }
+    };
+    if (passwordSearch.trim().length !== 0) {
+      searchPassword(passwordSearch);
+    } 
+
+    return () => {
+      if (latestRequestRef.current) {
+        latestRequestRef.current.abort();
+      }
+    };
+  }, [passwordSearch, token, user, page]);
+
+  const getPasswords=async()=>{
+    if (isLogin && passwordSearch === "") {
       (async () => {
-        console.log("Load Called")
         passwordDispatch({ type: "LOADING", payload: true });
         try {
           const response = await getPasswordsService(page, token, user?.id);
@@ -49,28 +92,7 @@ export const PasswordProvider = ({ children }) => {
         }
       })();
     }
-  }, [page, token, user, isLogin,passwordSearch]);
-  console.log(passwordSearch)
-  useEffect(() => {
-    const searchPassword = async (search) => {
-      try {
-        console.log("search Called")
-        passwordDispatch({type:"LOADING",payload:true})
-        const response = await debouncedSearchPassword(search, user.id, token);
-        if(response?.status===200){
-          passwordDispatch({type:"SET_PASSWORDS",payload:response?.data?.data})
-          
-        }
-      } catch (e) {
-        console.log(e);
-      }
-      finally{
-        passwordDispatch({type:"LOADTING",payload:false})
-      }
-    };
-    if (passwordSearch.trim().length !== 0) searchPassword(passwordSearch);
-  }, [passwordSearch, token, user]);
-
+  }
   const createPassword = async (platform, username, password, description) => {
     try {
       const response = await addPasswordService(
@@ -179,6 +201,7 @@ export const PasswordProvider = ({ children }) => {
         getPasswordInfo,
         deletePassword,
         passwordDispatch,
+        getPasswords
       }}
     >
       {children}
