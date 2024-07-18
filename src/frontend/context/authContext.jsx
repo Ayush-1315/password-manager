@@ -1,18 +1,23 @@
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router";
 
-import { loginAuth, signupAuth } from "../services/authServices";
+import {
+  loginAuth,
+  signupAuth,
+  verifyTokenService,
+} from "../services/authServices";
 import { deboundedUserCheck } from "../utils/searchDebounce";
 import { useToaster } from "./toasterContext";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const { setToasterData ,toasterData} = useToaster();
+  const { setToasterData, toasterData } = useToaster();
   const navigate = useNavigate();
 
   const [isLogin, setIsLogin] = useState(
     JSON.parse(localStorage.getItem("user")) ?? false
   );
+  const { token } = isLogin;
   const [usernameAvailable, setUsernameAvailable] = useState(true);
   const logUser = async ({ username, password }) => {
     try {
@@ -29,7 +34,6 @@ export const AuthProvider = ({ children }) => {
         }));
       }
     } catch (e) {
-      console.log(e);
       switch (e?.response?.status) {
         case 400:
           console.log(
@@ -39,31 +43,46 @@ export const AuthProvider = ({ children }) => {
               e?.response?.data?.message
           );
           break;
+        case 401:
+          setToasterData((prev) => ({
+            ...prev,
+            message: "Invalid credentials",
+            status: "warning",
+          }));
+          break;
         case 404:
-          console.log(`Invalid credentials`);
+          setToasterData((prev) => ({
+            ...prev,
+            message: "User does not exist",
+            status: "error",
+          }));
           break;
         default:
           if (e.message === "Network Error") {
             setToasterData((prev) => ({
               ...prev,
               message: "Network Error",
-              status: "Error",
+              status: "error",
               isNetwork: true,
             }));
           } else {
-            console.log("Server Crashed");
+            setToasterData((prev) => ({
+              ...prev,
+              message: "Server Error",
+              status: "error",
+            }));
           }
           break;
       }
     }
   };
 
-  const logoffUser = () => {
+  const logoffUser = (expired) => {
     setIsLogin(false);
     localStorage.clear();
     navigate("/");
-    console.log(toasterData)
-    if(!toasterData.isNetwork){
+    console.log(toasterData);
+    if (!toasterData.isNetwork && !expired) {
       setToasterData((prev) => ({
         ...prev,
         message: "Logoff Success",
@@ -100,6 +119,28 @@ export const AuthProvider = ({ children }) => {
       console.log(e);
     }
   };
+
+  const verifyToken = async () => {
+    try {
+      await verifyTokenService(token);
+    } catch (e) {
+      if (e?.response?.status === 401) {
+        setToasterData((prev) => ({
+          ...prev,
+          message: "Session Timeout",
+          status: "warning",
+        }));
+        logoffUser(true);
+      } else {
+        setToasterData((prev) => ({
+          ...prev,
+          message: "Network Error",
+          status: "error",
+        }));
+        logoffUser(true);
+      }
+    }
+  };
   return (
     <AuthContext.Provider
       value={{
@@ -109,6 +150,7 @@ export const AuthProvider = ({ children }) => {
         signupUser,
         usernameAvailable,
         checkUserAvailability,
+        verifyToken,
       }}
     >
       {children}

@@ -22,7 +22,7 @@ export const Profile = () => {
     otp: "",
     attempt: false,
   };
-  const { isLogin, logoffUser } = useAuth();
+  const { isLogin, logoffUser,verifyToken} = useAuth();
   const { setToasterData,toasterData } = useToaster();
   const [userData, setUserData] = useState(null);
   const [editProfileForm, setEditProfileForm] = useState(false);
@@ -47,7 +47,6 @@ export const Profile = () => {
         const token = isLogin?.token;
         const userId = isLogin?.user?.id;
         const res = await userProfile(userId, token);
-        console.log(res);
         if (res.status === 200 && res.data?.data?.user?.id !== "") {
           setUserData({ ...res?.data?.data?.user });
         } else {
@@ -88,7 +87,9 @@ export const Profile = () => {
         setIsLoading(false);
       }
     })();
+    verifyToken()
     document.title = `Profile | Anzen`;
+    // eslint-disable-next-line
   }, [isLogin, logoffUser,setToasterData]);
   useEffect(()=>{
     if(toasterData?.isNetwork){

@@ -11,7 +11,7 @@ import { PasswordProvider } from "./frontend/context/passwordContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+
     <BrowserRouter>
       <ToasterProvider>
         <AuthProvider>
@@ -21,7 +21,7 @@ root.render(
         </AuthProvider>
       </ToasterProvider>
     </BrowserRouter>
-  </React.StrictMode>
+
 );
 
 // If you want to start measuring performance in your app, pass a function

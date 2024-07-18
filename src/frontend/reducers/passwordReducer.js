@@ -1,5 +1,5 @@
 export const initialPasswordState = {
-  passwordLoading: false,
+  passwordLoading: true,
   passwords: [],
   passwordSearch: "",
   page: 1,
@@ -11,7 +11,8 @@ export const passwordReducerFunction = (state, action) => {
     case "LOADING":
       return { ...state, passwordLoading: payload };
     case "SET_PASSWORDS":
-      return { ...state, passwords: [...payload] };
+      const {isSmallDevice,data}=payload;
+      return { ...state, passwords: isSmallDevice && state.page!==1?[...state.passwords,...data]:[...data] };
     case "PASSWORD_SEARCH":
       return { ...state, passwordSearch: payload };
     case "SHOW_MORE":
@@ -37,6 +38,11 @@ export const passwordReducerFunction = (state, action) => {
         return {
           ...state,
           passwordSearch:payload
+        }
+      case "SEARCH_PAGE":
+        return {
+          ...state,
+          page:payload
         }
     default:
       return state;

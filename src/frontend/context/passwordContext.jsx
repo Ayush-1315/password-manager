@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useReducer, useRef } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 
 import {
   passwordReducerFunction,
@@ -22,6 +29,7 @@ export const PasswordProvider = ({ children }) => {
     initialPasswordState
   );
   const latestRequestRef = useRef(null);
+  const [totalPasswords, setTotalPasswords] = useState(0);
 
   const { setToasterData } = useToaster();
   const { isLogin } = useAuth();
@@ -44,7 +52,7 @@ export const PasswordProvider = ({ children }) => {
           if (passwordSearch.length >= 1) {
             passwordDispatch({
               type: "SET_PASSWORDS",
-              payload: response?.data?.data,
+              payload: { data: response?.data?.data, isSmallDevice: false },
             });
           }
         }
@@ -62,37 +70,60 @@ export const PasswordProvider = ({ children }) => {
     };
     if (passwordSearch.trim().length !== 0) {
       searchPassword(passwordSearch);
-    } 
+    }
 
     return () => {
       if (latestRequestRef.current) {
         latestRequestRef.current.abort();
       }
     };
-  }, [passwordSearch, token, user, page]);
+  }, [passwordSearch, token, user]);
 
-  const getPasswords=async()=>{
+  const getPasswords = async (inital,setIsLoading) => {
     if (isLogin && passwordSearch === "") {
       (async () => {
-        passwordDispatch({ type: "LOADING", payload: true });
+        if (inital) {
+          passwordDispatch({ type: "LOADING", payload: true });
+        }
+        else{
+          setIsLoading(true)
+        }
         try {
           const response = await getPasswordsService(page, token, user?.id);
-          passwordDispatch({ type: "LOADING", payload: false });
+          if (inital) {
+            passwordDispatch({ type: "LOADING", payload: false });
+          }
+          else{
+            setIsLoading(false)
+          }
           if (response?.status === 200) {
+            setTotalPasswords(response?.data?.totalPasswords);
             passwordDispatch({
               type: "SET_PASSWORDS",
-              payload: response?.data?.data,
+              payload: {
+                data: response?.data?.data,
+                isSmallDevice: window.screen.width <= 481,
+              },
             });
           }
+          
         } catch (e) {
-          passwordDispatch({ type: "LOADING", payload: false });
-          console.log(e);
+          if (inital) {
+            passwordDispatch({ type: "LOADING", payload: false });
+          }
+          setToasterData((prev) => ({
+            ...prev,
+            message: "Network Error",
+            status: "error",
+          }));
         } finally {
-          passwordDispatch({ type: "LOADING", payload: false });
+          if (!window.screen.width <= 481) {
+            passwordDispatch({ type: "LOADING", payload: false });
+          }
         }
       })();
     }
-  }
+  };
   const createPassword = async (platform, username, password, description) => {
     try {
       const response = await addPasswordService(
@@ -201,7 +232,8 @@ export const PasswordProvider = ({ children }) => {
         getPasswordInfo,
         deletePassword,
         passwordDispatch,
-        getPasswords
+        getPasswords,
+        totalPasswords,
       }}
     >
       {children}

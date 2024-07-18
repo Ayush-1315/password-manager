@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { PasswordForm } from "../../components/passwordForm/passwordForm";
 import { usePassword } from "../../context/passwordContext";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/authContext";
 
 export const HomePage = () => {
   const [showForm, setShowForm] = useState(false);
   const { createPassword } = usePassword();
+  const { verifyToken } = useAuth();
   useEffect(() => {
+    verifyToken();
     document.title = "Anzen | Home";
+    // eslint-disable-next-line
   }, []);
   const addPassword = async (data) => {
     const { username, password, platform, description } = data;
@@ -17,13 +21,15 @@ export const HomePage = () => {
     <>
       <span onClick={() => setShowForm(true)}>
         <i className="fa-solid fa-user-plus"></i>
+        <span>Create Password</span>
       </span>
       <Link to="/browse-passwords">
         <i className="fa-solid fa-magnifying-glass"></i>
+        <span>Browse Passwords</span>
       </Link>
       {showForm && (
         <PasswordForm
-          submitData={async(data) => {
+          submitData={async (data) => {
             await addPassword(data);
             setShowForm(false);
           }}

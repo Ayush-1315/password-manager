@@ -1,14 +1,24 @@
 .toaster {
   position: absolute;
   top: 25px;
-  left: 50%;
-  background-color: #ffffff;
+  left: 43%;
   padding: 0;
   width: fit-content;
-  color: #000000;
   transition: opacity 0.5s ease;
+  padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
-
+.error{
+  color:#be504d;
+}
+.warning{
+  color:#1a75ff;
+}
+.success{
+  color:#41af4d;
+}
 @keyframes dropDown{
   from {
     transform: translateY(-100%);

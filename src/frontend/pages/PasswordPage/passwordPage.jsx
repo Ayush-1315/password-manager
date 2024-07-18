@@ -5,21 +5,43 @@ import { usePassword } from "../../context/passwordContext";
 
 import { PasswordCard } from "../../components/passwordCard/passwordCard";
 import { PasswordForm } from "../../components/passwordForm/passwordForm";
+import { useAuth } from "../../context/authContext";
+import { getBasicPaswordInfoService } from "../../services/paswordServices";
 
 export const PasswordPage = () => {
   const { passwordId, id } = useParams();
   const { passwordState, updatePassword, getPasswordInfo } = usePassword();
-  
+  const { verifyToken, isLogin } = useAuth();
+
   const [viewPassword, setViewPassword] = useState("");
   const [password, setPassword] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editFormData, setEditFormData] = useState(null);
+
   useEffect(() => {
-    setPassword((prev) => ({
-      ...prev,
-      ...passwordState.passwords?.find(({ _id }) => _id === passwordId),
-    }));
+    (async () => {
+      try {
+        const response = await getBasicPaswordInfoService(
+          id,
+          passwordId,
+          isLogin.token
+        );
+        if (response?.status === 200) {
+          setPassword((prev) => ({ ...prev, ...response?.data?.data }));
+        } else {
+          console.log(response);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+    // setPassword((prev) => ({
+    //   ...prev,
+    //   ...passwordState.passwords?.find(({ _id }) => _id === passwordId),
+    // }));
+    verifyToken();
     document.title = "Anzen | Password";
+    // eslint-disable-next-line
   }, [passwordId, passwordState]);
 
   const showPassowrdDetails = async (showPassword) => {
@@ -30,7 +52,7 @@ export const PasswordPage = () => {
       } else if (password.password) {
         setPassword((prev) => ({ ...prev, ...data }));
       } else {
-        const { _id, username, platform, description } =data;
+        const { _id, username, platform, description } = data;
         setPassword((prev) => ({
           ...prev,
           _id,
@@ -75,14 +97,18 @@ export const PasswordPage = () => {
         />
       )}
       <Link to="/browse-passwords">Back</Link>
-      {password && <PasswordCard {...password} />}
-      <input
-        type="text"
-        onChange={(e) => setViewPassword(e.target.value)}
-        value={viewPassword || ""}
-      />
-      <button onClick={() => showPassowrdDetails(true)}>View</button>
-      <button onClick={() => editPassword()}>Edit Password</button>
+      {password ? (
+        <>
+          <PasswordCard {...password} />
+          <input
+            type="text"
+            onChange={(e) => setViewPassword(e.target.value)}
+            value={viewPassword || ""}
+          />
+          <button onClick={() => showPassowrdDetails(true)}>View</button>
+          <button onClick={() => editPassword()}>Edit Password</button>
+        </>
+      ):"Loading"}
     </>
   );
 };

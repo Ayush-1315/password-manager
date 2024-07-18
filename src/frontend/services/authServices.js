@@ -12,15 +12,33 @@ export const loginAuth = async (username, password) => {
   }
 };
 
-export const signupAuth = async (username, password, email,firstName,lastName) => {
+export const signupAuth = async (
+  username,
+  password,
+  email,
+  firstName,
+  lastName
+) => {
   try {
     const response = await axios.post(`${BASE_URL}/password-manager/signup`, {
       username,
       password,
       email,
       firstName,
-      lastName
+      lastName,
     });
+    return response;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const verifyTokenService = async (token) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/password-manager/verify-token`,
+      { headers: { Authorization: token } }
+    );
     return response;
   } catch (e) {
     throw e;

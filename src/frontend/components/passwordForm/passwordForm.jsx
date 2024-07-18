@@ -106,6 +106,7 @@ export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
               onChange={(e) => changeHandler("username", e.target.value)}
               onFocus={() => setFocus((prev) => ({ ...prev, username: true }))}
               onBlur={() => setFocus((prev) => ({ ...prev, username: false }))}
+              required={true}
             />
           </div>
           <div
@@ -138,6 +139,7 @@ export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
                 setPasswordFoucs(false);
                 setFocus((prev) => ({ ...prev, password: false }));
               }}
+              required={true}
             />
             {!showPassword ? (
               <i
@@ -168,6 +170,7 @@ export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
               onChange={(e) => changeHandler("platform", e.target.value)}
               onFocus={() => setFocus((prev) => ({ ...prev, platform: true }))}
               onBlur={() => setFocus((prev) => ({ ...prev, platform: false }))}
+              required={true}
             />
           </div>
           <div className={passwordFormCSS.fieldContainer}>

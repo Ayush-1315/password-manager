@@ -122,3 +122,19 @@ export const deletePasswordService = async (userId, passId, token) => {
     throw e;
   }
 };
+
+export const getBasicPaswordInfoService = async (userId, passId, token) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/passwords/password/${userId}/${passId}`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    return response;
+  } catch (e) {
+    throw e;
+  }
+};
