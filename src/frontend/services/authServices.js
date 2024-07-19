@@ -1,10 +1,11 @@
 import axios from "axios";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-export const loginAuth = async (username, password) => {
+export const loginAuth = async (username, password,otp) => {
   try {
     const response = await axios.post(`${BASE_URL}/password-manager/login`, {
       username,
       password,
+      otp
     });
     return response;
   } catch (e) {

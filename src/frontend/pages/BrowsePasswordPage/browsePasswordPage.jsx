@@ -40,12 +40,11 @@ export const BrowsePasswordPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       await getPasswords(page === 1, (val) => {
-        setIsLoading(val);
+        if(window.screen.width<=481)
+          setIsLoading(val);
       });
     };
-
     fetchData();
-
     pageRef.current = page;
     // eslint-disable-next-line
   }, [page, passwordSearch, isLogin, token, user]);

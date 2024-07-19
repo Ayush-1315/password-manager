@@ -19,9 +19,9 @@ export const AuthProvider = ({ children }) => {
   );
   const { token } = isLogin;
   const [usernameAvailable, setUsernameAvailable] = useState(true);
-  const logUser = async ({ username, password }) => {
+  const logUser = async ({ username, password,otp }) => {
     try {
-      const response = await loginAuth(username, password);
+      const response = await loginAuth(username, password,otp);
       if (response?.status === 200) {
         const userData = response?.data?.data;
         localStorage.setItem("user", JSON.stringify(userData));
@@ -36,12 +36,11 @@ export const AuthProvider = ({ children }) => {
     } catch (e) {
       switch (e?.response?.status) {
         case 400:
-          console.log(
-            "Status: " +
-              e?.response?.status +
-              "\nMessage:" +
-              e?.response?.data?.message
-          );
+          setToasterData((prev) => ({
+            ...prev,
+            message: "Invalid OTP",
+            status: "warning",
+          }));
           break;
         case 401:
           setToasterData((prev) => ({

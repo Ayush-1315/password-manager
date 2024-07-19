@@ -6,20 +6,21 @@
   width: fit-content;
   transition: opacity 0.5s ease;
   padding: 0.5rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 100;
 }
-.error{
-  color:#be504d;
+.error {
+  color: #be504d;
 }
-.warning{
-  color:#1a75ff;
+.warning {
+  color: #1a75ff;
 }
-.success{
-  color:#41af4d;
+.success {
+  color: #41af4d;
 }
-@keyframes dropDown{
+@keyframes dropDown {
   from {
     transform: translateY(-100%);
     opacity: 0;

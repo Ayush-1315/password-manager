@@ -58,6 +58,17 @@ export const sendForgotOTP = async (user) => {
   }
 };
 
+export const sendLoginOtp=async(user)=>{
+  try{
+    const response=await axios.post(`${BASE_URL}/password-manager/login-otp`,{
+      username:user,
+    })
+    return response;
+  }
+  catch(e){
+    throw e
+  }
+}
 export const resetPasswordService = async (user, otp, newPassword) => {
   try {
     const response = await axios.post(

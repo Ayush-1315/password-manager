@@ -86,6 +86,11 @@
 .filled {
     transform: translate(0, -0.5rem);
 }
+.timer{
+    font-size: 0.8rem;
+    display: inline-block;
+    margin: auto;
+}
 /* Media Queries */
 @media (min-width: 320px) {
     .loginForm{
