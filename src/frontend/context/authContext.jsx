@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }) => {
         }));
       }
     } catch (e) {
+      console.log()
       switch (e?.response?.status) {
         case 400:
           setToasterData((prev) => ({

@@ -1,10 +1,16 @@
-import { useState,useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import loginFormCSS from "./loginForm.module.css";
 import { Link } from "react-router-dom";
-export const Login = ({ onSubmit, signupLink, forgotLink, onNext }) => {
-  const timerIdRef=useRef(null);
-  const [timer,setTimer]=useState(299)
+export const Login = ({
+  onSubmit,
+  signupLink,
+  forgotLink,
+  onNext,
+  onTimeout,
+}) => {
+  const timerIdRef = useRef(null);
+  const [timer, setTimer] = useState(299);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -24,6 +30,12 @@ export const Login = ({ onSubmit, signupLink, forgotLink, onNext }) => {
     password: false,
     otp: false,
   });
+  useEffect(() => {
+    if (timer===0) {
+      onTimeout();
+    }
+    // eslint-disable-next-line
+  }, [timer]);
   const changeHandler = (type, value) => {
     setFormData((prev) => ({ ...prev, [type]: value }));
     setFormValidation((prev) =>
@@ -68,7 +80,7 @@ export const Login = ({ onSubmit, signupLink, forgotLink, onNext }) => {
       setTimer((prev) => {
         if (prev === 0) {
           clearInterval(timerIdRef.current);
-          resetStateVariables()
+          resetStateVariables();
           return 0;
         } else {
           return prev - 1;
@@ -79,7 +91,7 @@ export const Login = ({ onSubmit, signupLink, forgotLink, onNext }) => {
   const handleNext = async (e) => {
     e.preventDefault();
     if (formValidation.username && formValidation.password) {
-      await onNext(formData.username, () => nextAndTimer());
+      await onNext(formData.username, formData.password, () => nextAndTimer());
     } else {
       alert(`Provide valid Credentials`);
     }
@@ -195,7 +207,13 @@ export const Login = ({ onSubmit, signupLink, forgotLink, onNext }) => {
                 }}
                 value={formData.otp || ""}
               />
-              <span className={loginFormCSS.timer}>{`${Math.floor(timer/60)}:${Math.floor((timer%60)/10)===0?`0${timer%60}`:timer%60}`}</span>
+              <span className={loginFormCSS.timer}>{`${Math.floor(
+                timer / 60
+              )}:${
+                Math.floor((timer % 60) / 10) === 0
+                  ? `0${timer % 60}`
+                  : timer % 60
+              }`}</span>
               <button>Login</button>
             </>
           )}

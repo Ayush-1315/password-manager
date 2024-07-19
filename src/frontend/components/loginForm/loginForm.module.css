@@ -69,7 +69,7 @@
     font-size: 0.8rem;
     align-self: center;
 }
-    .loginLabels{
+.loginLabels{
     position: absolute;
     pointer-events: none;
     transform: translate(0, 23px) scale(1);
@@ -84,7 +84,7 @@
     top:-1.5rem;
 }
 .filled {
-    transform: translate(0, -0.5rem);
+    transform: translate(0, -0.5rem) scale(0.8);
 }
 .timer{
     font-size: 0.8rem;

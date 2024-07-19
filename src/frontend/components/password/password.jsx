@@ -23,7 +23,7 @@ export const PasswordHolder = ({
         <h2>{username}</h2>
         <span>{platform}</span>
         <p>{description}</p>
-        <button onClick={e=>handleDelete(e)}>Delete</button>
+        <button onClick={e=>handleDelete(e)}><i className="fa-solid fa-trash"></i><span>Delete</span></button>
       </div>
     </div>
   );

@@ -195,7 +195,7 @@ export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
               }
             />
           </div>
-          <button>{_id ? "Update" : "Create"}</button>
+          <button><i className="fa-solid fa-plus"></i>{_id ? <span>Update</span> : <span>Create</span>}</button>
         </form>
       </div>
     </div>

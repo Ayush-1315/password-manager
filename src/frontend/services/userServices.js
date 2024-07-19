@@ -58,10 +58,11 @@ export const sendForgotOTP = async (user) => {
   }
 };
 
-export const sendLoginOtp=async(user)=>{
+export const sendLoginOtp=async(user,password)=>{
   try{
     const response=await axios.post(`${BASE_URL}/password-manager/login-otp`,{
       username:user,
+      password
     })
     return response;
   }
