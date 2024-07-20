@@ -198,6 +198,7 @@ export const Login = ({
                 type="text"
                 name="otp"
                 id="OTP"
+                className={loginFormCSS.otp}
                 onChange={(e) => changeHandler("otp", e.target.value)}
                 onFocus={() => {
                   setFocus((prev) => ({ ...prev, otp: true }));

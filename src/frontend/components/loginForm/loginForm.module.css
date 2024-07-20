@@ -36,7 +36,7 @@
 .loginForm input:focus{
     outline: none;
 }
-.username:focus{
+.username:focus,.otp:focus{
     border-bottom: 1px solid #FFFFFF;
 }
 .passwordContainer{

@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
         }));
       }
     } catch (e) {
-      console.log()
+      console.log(e)
       switch (e?.response?.status) {
         case 400:
           setToasterData((prev) => ({
@@ -99,14 +99,26 @@ export const AuthProvider = ({ children }) => {
     lastName,
   }) => {
     try {
-      const res = await signupAuth(
+      const response = await signupAuth(
         username,
         password,
         email,
         firstName,
         lastName
       );
-      console.log(res);
+      if(response?.status===201){
+        const userData = response?.data?.data;
+        localStorage.setItem("user", JSON.stringify(userData));
+        setIsLogin(userData);
+        navigate("/home");
+        setToasterData((prev) => ({
+          ...prev,
+          message: "LogIn Success",
+          status: "success",
+        }));
+      }else{
+        console.log(response)
+      }
     } catch (e) {
       console.log(e);
     }

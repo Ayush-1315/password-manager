@@ -48,7 +48,7 @@ export const ForgotPasswordPage = () => {
     <>
       {!confirmReset ? (
         <>
-          {showResetPassword ? (
+          {!showResetPassword ? (
             <ResetPassword
               onSubmit={(otp, newPassword) => {
                 resetPassword(otp, newPassword);
