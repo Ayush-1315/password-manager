@@ -20,7 +20,7 @@ const sendOTPHandler=async(user,password,cb)=>{
     setToasterData({ message: "OTP Sent", status: "success" })
     cb();
   }catch(e){
-    switch(e.response.status){
+    switch(e?.response?.status){
       case 401:setToasterData({message:"Invalid Credentials",status:"error"});
       break;
       case 404:setToasterData({message:"User does not exist",status:"error"});

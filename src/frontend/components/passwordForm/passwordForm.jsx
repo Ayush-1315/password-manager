@@ -112,8 +112,8 @@ export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
           <div
             className={
               passwordFocus
-                ? `${passwordFormCSS.passwordContainer} ${passwordFormCSS.focus}`
-                : `${passwordFormCSS.passwordContainer}`
+                ? `${passwordFormCSS.password} ${passwordFormCSS.focus}`
+                : `${passwordFormCSS.password}`
             }
           >
             <label

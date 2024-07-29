@@ -33,7 +33,7 @@
 }
 .startOptions {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   min-width: 70%;
   gap: 0.5rem;
 }
@@ -123,7 +123,19 @@
     display: none;
   }
 }
-
+.profile{
+  color: #FFFFFF;
+  background: #3DAD49;
+  padding: 0.5rem 1rem;
+  border-radius: 50%;
+  outline: 2px solid;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+}
+.profile:hover{
+  transform: scale(1.2);
+}
 /* Media Queries */
 @media (min-width: 320px) {
   .navbarOptions {

@@ -4,6 +4,8 @@ import { useAuth } from "../../context/authContext";
 import { usePassword } from "../../context/passwordContext";
 import { PasswordHolder } from "../../components/password/password";
 import BrowsePasswordCSS from "./browsePasswords.module.css";
+import Loader from "../../components/loader/loader";
+import MobileLoader from "../../components/mobileLoader/mobileLoader";
 
 export const BrowsePasswordPage = () => {
   const { isLogin, verifyToken } = useAuth();
@@ -109,7 +111,7 @@ export const BrowsePasswordPage = () => {
       />
       <div>
         {passwordState?.passwordLoading ? (
-          "Loading"
+          <Loader/>
         ) : (
           <>
             <div className={BrowsePasswordCSS.page}>
@@ -128,20 +130,7 @@ export const BrowsePasswordPage = () => {
                 : "Nothing matched your search"}
             </div>
             {isLoading && (
-              <div
-                style={{
-                  position: "fixed",
-                  bottom: "0",
-                  background: "red",
-                  width: "100%",
-                  textAlign: "center",
-                  zIndex: 1000,
-                  padding: "10px",
-                  color: "white",
-                }}
-              >
-                Loading
-              </div>
+              <MobileLoader/>
             )}
             {passwordSearch === "" && !(window.screen.width <= 481) && (
               <div className={BrowsePasswordCSS.buttons}>

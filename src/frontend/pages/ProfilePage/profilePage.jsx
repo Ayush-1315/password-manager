@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../context/authContext";
 import {
   authorizedProfileDelete,
@@ -12,6 +12,8 @@ import { EditProfile } from "../../components/editProfile/editProfile";
 import { DeleteProfile } from "../../components/deleteProfile/deleteProfile";
 import { UpdatePassword } from "../../components/updatePasswordForm/updatePasssword";
 import { useToaster } from "../../context/toasterContext";
+import { Modal } from "../../components/modal/modal";
+import Loader from "../../components/loader/loader";
 
 export const Profile = () => {
   const initialDeletOptions = {
@@ -22,13 +24,15 @@ export const Profile = () => {
     otp: "",
     attempt: false,
   };
-  const { isLogin, logoffUser,verifyToken} = useAuth();
-  const { setToasterData,toasterData } = useToaster();
+
+  const modalOptions = {
+    editUser: false,
+    updatePassword: false,
+  };
+  const { isLogin, logoffUser, verifyToken } = useAuth();
+  const { setToasterData, toasterData } = useToaster();
   const [userData, setUserData] = useState(null);
-  const [editProfileForm, setEditProfileForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [userTimeout, setUserTimeout] = useState(false);
-  const [timer, setTimer] = useState(5);
   const [deleteProfile, setDeleteProfile] = useState({
     ...initialDeletOptions,
   });
@@ -39,7 +43,8 @@ export const Profile = () => {
     newPassword: "",
     attempt: false,
   });
-  const timerIdRef = useRef(null);
+
+  const [showModal, setShowModal] = useState({ ...modalOptions });
 
   useEffect(() => {
     (async () => {
@@ -55,27 +60,14 @@ export const Profile = () => {
       } catch (e) {
         setUserData(false);
         if (e?.response?.status === 401) {
-          setUserTimeout(true);
-
-          if (timerIdRef.current) {
-            clearInterval(timerIdRef.current);
-          }
-          timerIdRef.current = setInterval(() => {
-            setTimer((prev) => {
-              console.log(`Timer value ${prev}`);
-              if (prev === 0) {
-                clearInterval(timerIdRef.current);
-                logoffUser();
-                return 0;
-              } else {
-                return prev - 1;
-              }
-            });
-          }, 1000);
+          setToasterData((prev) => ({
+            ...prev,
+            message: "Timeout",
+            status: "warning",
+          }));
         } else if (e?.response?.status === 404) {
           logoffUser();
         } else {
-          console.log('New values')
           setToasterData((prev) => ({
             ...prev,
             message: "Server Error",
@@ -87,15 +79,15 @@ export const Profile = () => {
         setIsLoading(false);
       }
     })();
-    verifyToken()
+    verifyToken();
     document.title = `Profile | Anzen`;
     // eslint-disable-next-line
-  }, [isLogin, logoffUser,setToasterData]);
-  useEffect(()=>{
-    if(toasterData?.isNetwork){
-      logoffUser()
+  }, [isLogin, logoffUser, setToasterData]);
+  useEffect(() => {
+    if (toasterData?.isNetwork) {
+      logoffUser();
     }
-  },[toasterData,logoffUser])
+  }, [toasterData, logoffUser]);
   const submitHandler = async (data) => {
     try {
       const id = isLogin?.user?.id;
@@ -108,7 +100,7 @@ export const Profile = () => {
         email,
         token
       );
-      setEditProfileForm(false);
+      setShowModal((prev) => ({ ...prev, editUser: false }));
       if (response?.status === 201) {
         setUserData((prev) => ({ ...prev, ...response?.data?.data }));
       } else {
@@ -118,11 +110,6 @@ export const Profile = () => {
       console.log(e);
     }
   };
-
-  const cancelHandler = () => {
-    setEditProfileForm(false);
-  };
-
   const deleteProfileOTP = async (userId, email, username) => {
     try {
       const response = await sendDeleteOTP(
@@ -138,6 +125,11 @@ export const Profile = () => {
           email,
           username,
           attempt: true,
+        }));
+        setToasterData((prev) => ({
+          ...prev,
+          message: "OTP Sent",
+          status: "success",
         }));
       } else {
         console.log(response);
@@ -163,7 +155,15 @@ export const Profile = () => {
         console.log(response);
       }
     } catch (e) {
-      console.log(e);
+      if (e?.response?.status === 400) {
+        setToasterData((prev) => ({
+          ...prev,
+          message: "Invalid OTP",
+          status: "error",
+        }));
+      } else {
+        console.log(e);
+      }
     }
   };
 
@@ -184,73 +184,96 @@ export const Profile = () => {
   };
   return (
     <>
-      {userTimeout ? (
-        <span>Token Expired {timer}</span>
-      ) : (
-        <div>
-          {editProfileForm && userData && (
-            <EditProfile
-              userData={userData}
-              onSubmit={(data) => {
-                submitHandler(data);
-              }}
-              onCancel={cancelHandler}
-            />
-          )}
-          {isLoading ? (
-            <div>Loading...</div>
-          ) : userData ? (
-            <>
-              <ProfileCard
+      <div>
+        {showModal.editUser && userData && (
+          <Modal
+            component={
+              <EditProfile
                 userData={userData}
-                onEdit={() => {
-                  setEditProfileForm(true);
+                onSubmit={(data) => {
+                  submitHandler(data);
                 }}
-                onLogOff={() => logoffUser()}
-                onDelete={(userId, email, username) =>
-                  deleteProfileOTP(userId, email, username)
-                }
-                onUpdatePassword={(userId, username) =>
-                  setUpdatePasssword((prev) => ({
+                onCancel={() =>
+                  setShowModal((prev) => ({
                     ...prev,
-                    userId,
-                    username,
-                    attempt: true,
+                    editUser: false,
                   }))
                 }
               />
-              {updatePassword.attempt && (
-                <UpdatePassword
-                  handleSubmit={(password, newPassword) => {
-                    setUpdatePasssword((prev) => ({
-                      ...prev,
-                      password,
-                      newPassword,
-                    }));
-                    passwordUpdate();
-                  }}
-                  handleCancel={() =>
-                    setUpdatePasssword((prev) => ({ ...prev, attempt: false }))
-                  }
-                />
-              )}
-              {deleteProfile.attempt && (
-                <DeleteProfile
-                  setDeleteData={(otp, password) => {
-                    setDeleteProfile((prev) => ({ ...prev, otp, password }));
-                    authorizeDeletProfile();
-                  }}
-                  handleCancel={() => {
-                    setDeleteProfile({ ...initialDeletOptions });
-                  }}
-                />
-              )}
-            </>
-          ) : (
-            <span>Sorry for Inconvinience, there are some server issues.</span>
-          )}
-        </div>
-      )}
+            }
+            onClose={() =>
+              setShowModal((prev) => ({ ...prev, ...modalOptions }))
+            }
+          />
+        )}
+        {isLoading ? (
+          <Loader/>
+        ) : userData ? (
+          <>
+            <ProfileCard
+              userData={userData}
+              onEdit={() => {
+                setShowModal((prev) => ({ ...prev, editUser: true }));
+              }}
+              onLogOff={() => logoffUser()}
+              onDelete={(userId, email, username) =>
+                deleteProfileOTP(userId, email, username)
+              }
+              onUpdatePassword={(userId, username) =>
+                setUpdatePasssword((prev) => ({
+                  ...prev,
+                  userId,
+                  username,
+                  attempt: true,
+                }))
+              }
+            />
+            {updatePassword.attempt && (
+              <Modal
+                component={
+                  <UpdatePassword
+                    handleSubmit={(password, newPassword) => {
+                      setUpdatePasssword((prev) => ({
+                        ...prev,
+                        password,
+                        newPassword,
+                      }));
+                      passwordUpdate();
+                    }}
+                    handleCancel={() =>
+                      setUpdatePasssword((prev) => ({
+                        ...prev,
+                        attempt: false,
+                      }))
+                    }
+                  />
+                }
+                onClose={() =>
+                  setUpdatePasssword((prev) => ({ ...prev, attempt: false }))
+                }
+              />
+            )}
+            {deleteProfile.attempt && (
+              <Modal
+                component={
+                  <DeleteProfile
+                    setDeleteData={(otp, password) => {
+                      setDeleteProfile((prev) => ({ ...prev, otp, password }));
+                      authorizeDeletProfile();
+                    }}
+                    handleCancel={() => {
+                      setDeleteProfile({ ...initialDeletOptions });
+                    }}
+                  />
+                }
+                onClose={() => setDeleteProfile({ ...initialDeletOptions })}
+              />
+            )}
+          </>
+        ) : (
+          <span>Sorry for Inconvinience, there are some server issues.</span>
+        )}
+      </div>
     </>
   );
 };

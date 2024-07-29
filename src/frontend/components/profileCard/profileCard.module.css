@@ -1,0 +1,160 @@
+.card {
+  width: 25vw;
+  margin: 2rem auto;
+  padding: 1rem;
+  position: relative;
+}
+.logo {
+  background: #3dad49;
+  display: inline-block;
+  padding: 2.5rem 4rem;
+  font-size: 4rem;
+  border-radius: 50%;
+  margin: 1rem;
+  outline: 2px solid;
+}
+.profileContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.profileDetails > div {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.5rem;
+  justify-content: space-between;
+}
+.profileDetails > div > span:first-child {
+  /* font-weight: bold; */
+  font-size: 1.2rem;
+  font-style: italic;
+}
+.name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-style: oblique;
+}
+.username {
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+.editBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.8rem;
+  border-radius: 0.4rem;
+  border: 1px solid #3dad49;
+  color: #3dad49;
+}
+.editBtn:hover {
+  background-color: #3dad49;
+  color: #ffffff;
+}
+.passwordUpdateBtn,
+.logOffBtn,
+.deleteProfileBtn {
+  display: flex;
+  margin: 1rem auto;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ad3d6c;
+  font-weight: bold;
+  border: 2px solid #ad3d6c;
+}
+.passwordUpdateBtn:hover {
+  background-color: #ad3d6c;
+  color: #ffffff;
+}
+.logOffBtn {
+  color: #1a75ff;
+  border: 2px solid #1a75ff;
+}
+.logOffBtn:hover {
+  color: #ffffff;
+  background-color: #1a75ff;
+}
+.deleteProfileBtn {
+  color: #be504d;
+  border: 2px solid #be504d;
+}
+.deleteProfileBtn:hover {
+  background-color: #be504d;
+  color: #ffffff;
+}
+.actionBtns {
+  display: flex;
+  gap: 0.5rem;
+}
+/* Media Queries */
+@media (min-width: 320px) {
+  .card {
+    width: 80vw;
+    margin: 1rem auto;
+  }
+  .card h2{
+    font-size: 1.3rem;
+  }
+  .name{
+    font-size: 1.2rem;
+  }
+  .profileDetails>div>span:first-child{
+    font-size: 1rem;
+  }
+  .profileDetails>div>span:nth-child(2){
+    font-size: 0.8rem;
+  }
+}
+@media (min-width: 481px) {
+  .card {
+    width: 65vw;
+  }
+  .card h2{
+    font-size: 1.5rem;
+  }
+  .name{
+    font-size: 1.5rem;
+  }
+  .profileDetails>div>span:first-child{
+    font-size: 1rem;
+  }
+  .profileDetails>div>span:nth-child(2){
+    font-size: 1rem;
+  }
+}
+@media (min-width: 600px) {
+  .card {
+    width: 50vw;
+  }
+}
+@media (min-width: 769px) {
+  .card {
+    width: 40vw;
+  }
+}
+@media (min-width: 900px) {
+  .card {
+    width: 35vw;
+  }
+}
+@media (min-width: 1024px) {
+  .heroContainer h1 {
+    width: 65%;
+  }
+  .heroContainer p {
+    width: 60%;
+  }
+}
+@media (min-width: 1200px) {
+  .card {
+    width: 30vw;
+  }
+}
+@media (min-width: 1440px) {
+  .card {
+    width: 20vw;
+  }
+}

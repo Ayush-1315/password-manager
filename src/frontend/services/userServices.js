@@ -113,7 +113,6 @@ export const authorizedProfileDelete = async (
   token
 ) => {
   try {
-    console.log(token);
     const response = await axios.delete(
       `${BASE_URL}/password-manager/authorize-delete/${userId}`,
       {

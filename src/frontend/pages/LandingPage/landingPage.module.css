@@ -3,9 +3,6 @@
   --primary-color: #43e8e1;
   --background: #0f054ccc;
 }
-.hero {
-  overflow-y: auto;
-}
 .heroContainer {
   width: 100%;
   display: flex;
@@ -113,6 +110,7 @@
   padding: 1rem;
   text-align: left;
   height: 38vh;
+  height: 100%;
 }
 .cards:nth-child(2) {
   display: flex;
@@ -243,6 +241,7 @@
 @media (min-width: 320px) {
   .cardContainer {
     flex-wrap: wrap;
+    height: 22rem;
   }
   .cards {
     width: 80vw;

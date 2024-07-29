@@ -1,4 +1,12 @@
-export const ProfileCard = ({ userData, onEdit, onLogOff, onDelete,onUpdatePassword}) => {
+import profileCardCSS from "./profileCard.module.css";
+
+export const ProfileCard = ({
+  userData,
+  onEdit,
+  onLogOff,
+  onDelete,
+  onUpdatePassword,
+}) => {
   const {
     id,
     username,
@@ -32,36 +40,93 @@ export const ProfileCard = ({ userData, onEdit, onLogOff, onDelete,onUpdatePassw
     minutes: createDate.getUTCMinutes(),
     seconds: createDate.getUTCSeconds(),
   };
-
   return (
-    <>
-      <div>
-        <div>Anzen ID: {id}</div>
-        <div>Username:{username}</div>
-        <div>Registered email: {email}</div>
+    <div className={`${`glassCard`} ${profileCardCSS.card}`}>
+      <h2>Account Details</h2>
+      <div className={profileCardCSS.profileContainer}>
         <div>
-          Name: {firstName} {lastName}
+          <span className={profileCardCSS.logo}>
+            {username[0]?.toUpperCase()}
+          </span>
         </div>
-
-        <div>Saved Passwords: {totalSavedPassword}</div>
-        <div>Role: {role}</div>
         <div>
-          {createdAt && (
-            <span>
-              Created At:{" "}
-              {`${date || ""} ${month || ""} ${year || ""};${hours || ""}:${
-                minutes || ""
-              }:${seconds || ""}`}
+          <div className={profileCardCSS.detail}>
+            <span className={profileCardCSS.name}>
+              {firstName} {lastName}
             </span>
-          )}
+          </div>
+          <div className={profileCardCSS.username}>
+            <span>@{username}</span>
+          </div>
+          <div className={profileCardCSS.detail}>
+            <button
+              onClick={onEdit}
+              className={`${`button`} ${profileCardCSS.editBtn}`}
+            >
+              <i className="fa-solid fa-pen-to-square"></i>
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={() => onUpdatePassword(id, username)}
+              className={`${`button`} ${profileCardCSS.passwordUpdateBtn}`}
+            >
+              <span>
+                <i className="fa-solid fa-pencil"></i>
+              </span>
+              <span>Update Password</span>
+            </button>
+          </div>
+          <div className={profileCardCSS.profileDetails}>
+            <div className={profileCardCSS.detail}>
+              <span>Anzen ID:</span> <span>{id}</span>
+            </div>
+
+            <div className={profileCardCSS.detail}>
+              <span>Email:</span> <span>{email}</span>
+            </div>
+
+            <div className={profileCardCSS.detail}>
+              <span>Saved Passwords:</span> <span>{totalSavedPassword}</span>
+            </div>
+            <div className={profileCardCSS.detail}>
+              <span>Role:</span> <span>{role}</span>
+            </div>
+            <div className={profileCardCSS.detail}>
+              {createdAt && (
+                <>
+                  <span>Created At: </span>
+                  <span>
+                    {`${date || ""} ${month || ""} ${year || ""};${
+                      hours || ""
+                    }:${minutes || ""}:${seconds || ""}`}
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+          <div className={profileCardCSS.actionBtns}>
+            <button
+              onClick={onLogOff}
+              className={`${`button`} ${profileCardCSS.logOffBtn}`}
+            >
+              <span>Logoff</span>
+              <span>
+                <i className="fa-solid fa-right-from-bracket"></i>
+              </span>
+            </button>
+            <button
+              onClick={() => onDelete(id, email, username)}
+              className={`${`button`} ${profileCardCSS.deleteProfileBtn}`}
+            >
+              <span>
+                <i className="fa-solid fa-trash"></i>
+              </span>
+              <span>Delete Profile</span>
+            </button>
+          </div>
         </div>
       </div>
-      <div>
-        <button onClick={onEdit}>Edit Profile</button>
-        <button onClick={onLogOff}>Logoff</button>
-        <button onClick={()=>onDelete(id,email,username)}>Delete Profile</button>
-        <button onClick={()=>onUpdatePassword(id,username)}>Update Password</button>
-      </div>
-    </>
+    </div>
   );
 };

@@ -6,15 +6,21 @@ import {
   sendForgotOTP,
 } from "../../services/userServices";
 import { useToaster } from "../../context/toasterContext";
-
+import {useAuth} from "../../context/authContext";
+import { useNavigate } from "react-router";
 export const ForgotPasswordPage = () => {
+  const {isLogin}=useAuth()
   const { setToasterData } = useToaster();
   const [user, setUser] = useState("");
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+  const navigate=useNavigate();
   useEffect(() => {
+    if(isLogin){
+      navigate("/home");
+    }
     document.title = "Reset Password | Anzen";
-  }, []);
+  }, [isLogin,navigate]);
   const forgotPasswordOTP = async (user) => {
     try {
       const response = await sendForgotOTP(user);
@@ -48,7 +54,7 @@ export const ForgotPasswordPage = () => {
     <>
       {!confirmReset ? (
         <>
-          {!showResetPassword ? (
+          {showResetPassword ? (
             <ResetPassword
               onSubmit={(otp, newPassword) => {
                 resetPassword(otp, newPassword);

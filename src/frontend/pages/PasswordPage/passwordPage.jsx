@@ -7,6 +7,7 @@ import { PasswordCard } from "../../components/passwordCard/passwordCard";
 import { PasswordForm } from "../../components/passwordForm/passwordForm";
 import { useAuth } from "../../context/authContext";
 import { getBasicPaswordInfoService } from "../../services/paswordServices";
+import Loader from "../../components/loader/loader";
 
 export const PasswordPage = () => {
   const { passwordId, id } = useParams();
@@ -108,7 +109,7 @@ export const PasswordPage = () => {
           <button onClick={() => showPassowrdDetails(true)}>View</button>
           <button onClick={() => editPassword()}>Edit Password</button>
         </>
-      ):"Loading"}
+      ):<Loader/>}
     </>
   );
 };
