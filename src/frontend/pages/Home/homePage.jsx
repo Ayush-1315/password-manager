@@ -4,6 +4,7 @@ import { usePassword } from "../../context/passwordContext";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 
+import homeCSS from "./homePage.module.css"
 export const HomePage = () => {
   const [showForm, setShowForm] = useState(false);
   const { createPassword } = usePassword();
@@ -18,13 +19,13 @@ export const HomePage = () => {
     await createPassword(platform, username, password, description);
   };
   return (
-    <>
-      <span onClick={() => setShowForm(true)}>
+    <div className={homeCSS.container}>
+      <span onClick={() => setShowForm(true)} className={homeCSS.actionCard}>
         <i className="fa-solid fa-user-plus"></i>
         <span>Create Password</span>
       </span>
-      <Link to="/browse-passwords">
-        <i className="fa-solid fa-magnifying-glass"></i>
+      <Link to="/browse-passwords" className={homeCSS.actionCard}>
+      <i className="fa-solid fa-binoculars"></i>
         <span>Browse Passwords</span>
       </Link>
       {showForm && (
@@ -36,6 +37,6 @@ export const HomePage = () => {
           closeForm={() => setShowForm(false)}
         />
       )}
-    </>
+    </div>
   );
 };

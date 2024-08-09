@@ -325,9 +325,7 @@ export const SignupForm = ({
               />
             </div>
             <div className={SignupCSS.warning}>
-              {formData.lastName.length < 4 && formData.lastName.length > 0
-                ? "Atleast 4 letters required"
-                : "‎"}
+                ‎
             </div>
             <div
               className={
@@ -362,7 +360,7 @@ export const SignupForm = ({
                   {formData.email.includes("@") &&
                   formData.email.includes(".com")
                     ? "‎"
-                    : "Atleast 4 letters required"}
+                    : "Enter a valid email"}
                 </>
               ) : (
                 "‎"

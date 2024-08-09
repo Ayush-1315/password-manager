@@ -7,6 +7,7 @@ export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
     username: "",
     password: "",
     platform: "",
+    website:"",
     description: "",
   };
 
@@ -14,6 +15,7 @@ export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
     username: false,
     password: false,
     platform: false,
+    website:false,
   };
 
   const [formData, setFormData] = useState(
@@ -27,6 +29,7 @@ export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
     password: false,
     platform: false,
     description: false,
+    website:false
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -170,6 +173,26 @@ export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
               onChange={(e) => changeHandler("platform", e.target.value)}
               onFocus={() => setFocus((prev) => ({ ...prev, platform: true }))}
               onBlur={() => setFocus((prev) => ({ ...prev, platform: false }))}
+              required={true}
+            />
+          </div>
+          <div className={passwordFormCSS.fieldContainer}>
+            <label
+              htmlFor="website"
+              className={
+                formData.website !== "" || focus.website
+                  ? `${passwordFormCSS.filled} ${passwordFormCSS.loginLabels}`
+                  : passwordFormCSS.loginLabels
+              }
+            >
+              Site
+            </label>
+            <input
+              type="text"
+              defaultValue={formData?.website}
+              onChange={(e) => changeHandler("website", e.target.value)}
+              onFocus={() => setFocus((prev) => ({ ...prev, website: true }))}
+              onBlur={() => setFocus((prev) => ({ ...prev, website: false }))}
               required={true}
             />
           </div>
