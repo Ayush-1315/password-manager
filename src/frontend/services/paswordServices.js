@@ -7,6 +7,7 @@ export const addPasswordService = async (
   username,
   password,
   description,
+  site,
   token
 ) => {
   try {
@@ -17,6 +18,7 @@ export const addPasswordService = async (
         username,
         description,
         password,
+        site
       },
       {
         headers: {
@@ -84,7 +86,8 @@ export const updateAccountPasswordService = async (
   platform,
   username,
   accountPassword,
-  description
+  description,
+  website
 ) => {
   try {
     const response = await axios.post(
@@ -94,6 +97,7 @@ export const updateAccountPasswordService = async (
         accPassword: accountPassword,
         description,
         platform,
+        website
       },
       {
         headers: {
@@ -138,3 +142,57 @@ export const getBasicPaswordInfoService = async (userId, passId, token) => {
     throw e;
   }
 };
+
+//Favourites Password
+
+export const addToFavouritesService=async(userId,passId,token)=>{
+  try{
+    const response=await axios.post(
+      `${BASE_URL}/passwords/favourites/${userId}/${passId}`,
+      {},
+      {
+        headers:{
+          authorization:token
+        }
+      }
+    );
+    return response;
+  }
+  catch(e){
+    throw e;
+  }
+}
+
+export const  removeFormFavouritesService=async(userId,passId,token)=>{
+  try{
+    const response=await axios.delete(
+      `${BASE_URL}/passwords/favourites/${userId}/${passId}`,
+      {
+        headers:{
+          authorization:token
+        }
+      }
+    );
+    return response;
+  }
+  catch(e){
+    throw e;
+  }
+}
+
+export const getAllFavouritesService=async(userId,token)=>{
+  try{
+    const response=await axios.get(
+      `${BASE_URL}/passwords/favourites/${userId}`,
+      {
+        headers:{
+          authorization:token
+        }
+      }
+    );
+    return response;
+  }
+  catch(e){
+    throw e;
+  }
+}

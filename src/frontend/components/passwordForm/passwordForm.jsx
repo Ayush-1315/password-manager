@@ -7,7 +7,7 @@ export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
     username: "",
     password: "",
     platform: "",
-    website:"",
+    website: "",
     description: "",
   };
 
@@ -15,23 +15,29 @@ export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
     username: false,
     password: false,
     platform: false,
-    website:false,
   };
-
+  
   const [formData, setFormData] = useState(
     _id ? { ...passwordBody } : { ...initialData }
   );
-  const [formValidator, setFormValidator] = useState({
-    ...initialFormValidator,
-  });
+  const [formValidator, setFormValidator] = useState(
+    _id
+    ? { username: passwordBody.username.length > 0,
+      password: passwordBody.password.length>0,
+      platform :passwordBody.platform.length>0,
+    }
+    : {
+          ...initialFormValidator,
+        }
+  );
   const [focus, setFocus] = useState({
     username: false,
     password: false,
     platform: false,
     description: false,
-    website:false
+    website: false,
   });
-
+  
   const [showPassword, setShowPassword] = useState(false);
   const [passwordFocus, setPasswordFoucs] = useState(false);
   const changeHandler = (type, value) => {
@@ -51,7 +57,7 @@ export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
     let isValid;
     if (_id) {
       isValid = Object.entries(formData).reduce((acc, curr) => {
-        if (curr[0] !== "description" && curr[0] !== "remindAfterDays") {
+        if (curr[0] !== "description" && curr[0] !== "remindAfterDays" && curr[0]!=="website") {
           if (curr[1].trim().length > 0) {
             return acc;
           } else {
@@ -218,7 +224,10 @@ export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
               }
             />
           </div>
-          <button><i className="fa-solid fa-plus"></i>{_id ? <span>Update</span> : <span>Create</span>}</button>
+          <button>
+            <i className="fa-solid fa-plus"></i>
+            {_id ? <span>Update</span> : <span>Create</span>}
+          </button>
         </form>
       </div>
     </div>

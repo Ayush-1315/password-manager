@@ -15,8 +15,8 @@ export const HomePage = () => {
     // eslint-disable-next-line
   }, []);
   const addPassword = async (data) => {
-    const { username, password, platform, description } = data;
-    await createPassword(platform, username, password, description);
+    const { username, password, platform, description,website} = data;
+    await createPassword(platform, username, password, description,website);
   };
   return (
     <div className={homeCSS.container}>
@@ -27,6 +27,10 @@ export const HomePage = () => {
       <Link to="/browse-passwords" className={homeCSS.actionCard}>
       <i className="fa-solid fa-binoculars"></i>
         <span>Browse Passwords</span>
+      </Link>
+      <Link to="/favourites" className={homeCSS.actionCard}>
+      <i className="fa-solid fa-star"></i>
+        <span>Browse Favourites</span>
       </Link>
       {showForm && (
         <PasswordForm

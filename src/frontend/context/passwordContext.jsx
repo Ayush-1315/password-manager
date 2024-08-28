@@ -13,8 +13,10 @@ import {
 } from "../reducers/passwordReducer";
 import {
   addPasswordService,
+  addToFavouritesService,
   deletePasswordService,
   getPasswordsService,
+  removeFormFavouritesService,
   updateAccountPasswordService,
   viewPasswordService,
 } from "../services/paswordServices";
@@ -79,22 +81,20 @@ export const PasswordProvider = ({ children }) => {
     };
   }, [passwordSearch, token, user]);
 
-  const getPasswords = async (inital,setIsLoading) => {
+  const getPasswords = async (inital, setIsLoading) => {
     if (isLogin && passwordSearch === "") {
       (async () => {
         if (inital) {
           passwordDispatch({ type: "LOADING", payload: true });
-        }
-        else{
-          setIsLoading(true)
+        } else {
+          setIsLoading(true);
         }
         try {
           const response = await getPasswordsService(page, token, user?.id);
           if (inital) {
             passwordDispatch({ type: "LOADING", payload: false });
-          }
-          else{
-            setIsLoading(false)
+          } else {
+            setIsLoading(false);
           }
           if (response?.status === 200) {
             setTotalPasswords(response?.data?.totalPasswords);
@@ -106,7 +106,6 @@ export const PasswordProvider = ({ children }) => {
               },
             });
           }
-          
         } catch (e) {
           if (inital) {
             passwordDispatch({ type: "LOADING", payload: false });
@@ -124,7 +123,13 @@ export const PasswordProvider = ({ children }) => {
       })();
     }
   };
-  const createPassword = async (platform, username, password, description) => {
+  const createPassword = async (
+    platform,
+    username,
+    password,
+    description,
+    website
+  ) => {
     try {
       const response = await addPasswordService(
         user?.id,
@@ -132,6 +137,7 @@ export const PasswordProvider = ({ children }) => {
         username,
         password,
         description,
+        website,
         token
       );
       if (response?.status === 201) {
@@ -160,28 +166,34 @@ export const PasswordProvider = ({ children }) => {
   };
 
   const updatePassword = async (
-    userId,
     passwordId,
-    username,
-    password,
     platform,
+    password,
+    username,
+    website,
     description
   ) => {
     try {
       const response = await updateAccountPasswordService(
-        userId,
+        user?.id,
         passwordId,
         token,
         platform,
         username,
         password,
-        description
+        description,
+        website
       );
       if (response?.status === 201) {
         passwordDispatch({
           type: "UPDATE_PASSWORD",
           payload: response?.data?.data,
         });
+        setToasterData((prev) => ({
+          ...prev,
+          message: "Password Updated",
+          status: "success",
+        }));
       } else {
         console.log(response);
       }
@@ -203,7 +215,15 @@ export const PasswordProvider = ({ children }) => {
         console.log(response);
       }
     } catch (e) {
-      console.log(e);
+      if (e.response.status === 401) {
+        setToasterData((prev) => ({
+          ...prev,
+          message: "Unauthorized Access",
+          status: "warning",
+        }));
+      } else {
+        console.log(e);
+      }
     }
   };
 
@@ -223,6 +243,45 @@ export const PasswordProvider = ({ children }) => {
     }
   };
 
+  const addToFavourites = async (passId) => {
+    try {
+      const response = await addToFavouritesService(user?.id, passId, token);
+      passwordDispatch({ type: "ADD_TO_FAVOURITES", payload: passId });
+      if (response.status === 200) {
+        setToasterData((prev) => ({
+          ...prev,
+          message: "Added to Favourites",
+          status: "success",
+        }));
+      } else {
+        console.log(response);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const removeFromFavourites = async (passId) => {
+    try {
+      const response = await removeFormFavouritesService(
+        user?.id,
+        passId,
+        token
+      );
+      passwordDispatch({ type: "REMOVE_FROM_FAVOURITES", payload: passId });
+      if (response.status === 200) {
+        setToasterData((prev) => ({
+          ...prev,
+          message: "Removed From Favourites",
+          status: "success",
+        }));
+      } else {
+        console.log(response);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <PasswordContext.Provider
       value={{
@@ -233,6 +292,8 @@ export const PasswordProvider = ({ children }) => {
         deletePassword,
         passwordDispatch,
         getPasswords,
+        addToFavourites,
+        removeFromFavourites,
         totalPasswords,
       }}
     >

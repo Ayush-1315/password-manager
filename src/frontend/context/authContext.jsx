@@ -19,9 +19,9 @@ export const AuthProvider = ({ children }) => {
   );
   const { token } = isLogin;
   const [usernameAvailable, setUsernameAvailable] = useState(true);
-  const logUser = async ({ username, password,otp }) => {
+  const logUser = async ({ username, password, otp }) => {
     try {
-      const response = await loginAuth(username, password,otp);
+      const response = await loginAuth(username, password, otp);
       if (response?.status === 200) {
         const userData = response?.data?.data;
         localStorage.setItem("user", JSON.stringify(userData));
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
         }));
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
       switch (e?.response?.status) {
         case 400:
           setToasterData((prev) => ({
@@ -81,7 +81,6 @@ export const AuthProvider = ({ children }) => {
     setIsLogin(false);
     localStorage.clear();
     navigate("/");
-    console.log(toasterData);
     if (!toasterData.isNetwork && !expired) {
       setToasterData((prev) => ({
         ...prev,
@@ -106,7 +105,7 @@ export const AuthProvider = ({ children }) => {
         firstName,
         lastName
       );
-      if(response?.status===201){
+      if (response?.status === 201) {
         const userData = response?.data?.data;
         localStorage.setItem("user", JSON.stringify(userData));
         setIsLogin(userData);
@@ -116,11 +115,26 @@ export const AuthProvider = ({ children }) => {
           message: "LogIn Success",
           status: "success",
         }));
-      }else{
-        console.log(response)
+      } else {
+        console.log(response);
+        
       }
     } catch (e) {
       console.log(e);
+      if (e.status) {
+        setToasterData((prev) => ({
+          ...prev,
+          message: "Error",
+          status: "error",
+        }));
+    }
+    else{
+      setToasterData((prev) => ({
+        ...prev,
+        message: "Network Error",
+        status: "error",
+      }));
+    }
     }
   };
   const checkUserAvailability = async (username) => {
@@ -129,6 +143,20 @@ export const AuthProvider = ({ children }) => {
       setUsernameAvailable(res);
     } catch (e) {
       console.log(e);
+      if (e.status) {
+        setToasterData((prev) => ({
+          ...prev,
+          message: "Error",
+          status: "error",
+        }));
+    }
+    else{
+      setToasterData((prev) => ({
+        ...prev,
+        message: "Network Error",
+        status: "error",
+      }));
+    }
     }
   };
 

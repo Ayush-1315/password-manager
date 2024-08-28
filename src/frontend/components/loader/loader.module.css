@@ -3,6 +3,9 @@
     justify-content: center;
     align-items: center;
     height: 90vh;
+    top: 0;
+    left: 50%;
+    position: absolute;
   }
   
   .triangle {

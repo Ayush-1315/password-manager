@@ -11,8 +11,14 @@ export const passwordReducerFunction = (state, action) => {
     case "LOADING":
       return { ...state, passwordLoading: payload };
     case "SET_PASSWORDS":
-      const {isSmallDevice,data}=payload;
-      return { ...state, passwords: isSmallDevice && state.page!==1?[...state.passwords,...data]:[...data] };
+      const { isSmallDevice, data } = payload;
+      return {
+        ...state,
+        passwords:
+          isSmallDevice && state.page !== 1
+            ? [...state.passwords, ...data]
+            : [...data],
+      };
     case "PASSWORD_SEARCH":
       return { ...state, passwordSearch: payload };
     case "SHOW_MORE":
@@ -34,16 +40,34 @@ export const passwordReducerFunction = (state, action) => {
         ...state,
         passwords: [...state.passwords, payload],
       };
-      case "SEARCH_PASSWORD":
-        return {
-          ...state,
-          passwordSearch:payload
-        }
-      case "SEARCH_PAGE":
-        return {
-          ...state,
-          page:payload
-        }
+    case "SEARCH_PASSWORD":
+      return {
+        ...state,
+        passwordSearch: payload,
+      };
+    case "SEARCH_PAGE":
+      return {
+        ...state,
+        page: payload,
+      };
+    case "ADD_TO_FAVOURITES":
+      return {
+        ...state,
+        passwords: state.passwords.map((password) =>
+          password?._id === payload
+            ? { ...password, isFavourite: true }
+            : password
+        ),
+      };
+    case "REMOVE_FROM_FAVOURITES":
+      return {
+        ...state,
+        passwords: state.passwords.map((password) =>
+          password?._id === payload
+            ? { ...password, isFavourite: false }
+            : password
+        ),
+      };
     default:
       return state;
   }

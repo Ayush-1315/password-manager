@@ -53,6 +53,7 @@ export const PasswordPage = () => {
       } else if (password.password) {
         setPassword((prev) => ({ ...prev, ...data }));
       } else {
+        
         const { _id, username, platform, description } = data;
         setPassword((prev) => ({
           ...prev,
@@ -69,12 +70,13 @@ export const PasswordPage = () => {
       setViewPassword("");
     }
   };
+  
   const editPassword = async () => {
     await showPassowrdDetails();
     setIsEdit(true);
   };
   const onUpdatePassword = async (data) => {
-    const { platform, description, username, password } = data;
+    const { platform, description, username, password,website } = data;
 
     await updatePassword(
       id,
@@ -82,7 +84,8 @@ export const PasswordPage = () => {
       username,
       password,
       platform,
-      description
+      description,
+      website
     );
     setIsEdit(false);
   };
