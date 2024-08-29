@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+# Anzen: Password Manager with Email 2FA
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Anzen** is a secure and user-friendly password management application developed using the MERN stack (MongoDB, Express.js, React, Node.js). This application aims to securely store and manage user passwords with added protection through email-based two-factor authentication (2FA).
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+## Project Overview
 
-### `npm start`
+In the digital age, managing multiple online accounts and their associated passwords can be challenging. **Anzen** provides a robust solution to this problem by offering a secure platform for password management and adding an extra layer of security with two-factor authentication (2FA) via email.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Secure Password Storage**: Utilizes AES encryption to protect passwords.
+- **Two-Factor Authentication (2FA)**: Enhances security by sending a verification code to the user's email.
+- **Password Management**: Allows users to add, edit, remove, and organize their passwords.
+- **User-Friendly Interface**: Built with React.js for an intuitive and responsive user experience.
+- **Password Generation**: Generates strong, random passwords to promote secure practices.
+- **Secure Data Transmission**: Uses HTTPS to encrypt data transmitted between the client and server.
+- **Scalability and Performance**: Designed to handle growing user data efficiently.
 
-### `npm test`
+## Technology Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **MongoDB Atlas**: Cloud-based NoSQL database for secure and scalable storage.
+- **Express.js**: Web framework for server-side logic and API routing.
+- **React.js**: JavaScript library for building dynamic user interfaces.
+- **Node.js**: JavaScript runtime for server-side operations.
+- **bcrypt**: Library for hashing passwords.
+- **crypto**: Module for encrypting sensitive data.
+- **Nodemailer**: Tool for implementing email-based 2FA.
+- **JWT (JSON Web Token)**: For secure session management and user authentication.
 
-### `npm run build`
+## Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. **Clone the Repository**:
+   ```sh
+   git clone https://github.com/your-username/anzen-password-manager.git
+2. **Navigate to the Project Directory**:
+3. ```sh
+   cd anzen-password-manager
+4. **Install Dependencies**:
+5. ```sh
+   npm install
+6. **Start the Application**:
+7. ```sh
+   npm start
