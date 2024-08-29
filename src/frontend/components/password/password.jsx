@@ -1,3 +1,4 @@
+import { copyTextFromDiv } from "../../utils/copyCode";
 import { pickRandomColor } from "../../utils/randomColor";
 import passwordHolderCSS from "./password.module.css";
 import { useEffect, useState } from "react";
@@ -33,7 +34,7 @@ export const PasswordHolder = ({
     if (viewPassword !== "") {
       setTimeout(() => {
         resetViewPassword();
-      }, 6000);
+      }, 10000);
     }
   }, [viewPassword, resetViewPassword]);
   const handleDelete = (e) => {
@@ -130,9 +131,11 @@ export const PasswordHolder = ({
           )}
         </div>
         <div className={passwordHolderCSS.flipCardBack}>
+          <>
           <p>Your Password is</p>
-          <br />
-          <p>{viewPassword}</p>
+          <p id={`password${_id}`}>{viewPassword}</p>
+          </>
+          <button onClick={()=>copyTextFromDiv(`password${_id}`)} className={passwordHolderCSS.copyBtn}><i className="fa-regular fa-copy"></i></button>
         </div>
       </div>
     </div>
