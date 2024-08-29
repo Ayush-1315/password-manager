@@ -10,8 +10,8 @@ import MobileLoader from "../../components/mobileLoader/mobileLoader";
 export const HomePage = () => {
   const [showForm, setShowForm] = useState(false);
   const [dashboard, setDashBoard] = useState({
-    totalPassword: false,
-    favourites: false,
+    totalPassword: null,
+    favourites: null,
   });
   const { createPassword } = usePassword();
   const { verifyToken, isLogin } = useAuth();
@@ -24,6 +24,7 @@ export const HomePage = () => {
           isLogin?.token
         );
         if (response?.status === 200) {
+          console.log(response)
           setDashBoard((prev) => ({ ...prev, ...response?.data.data }));
         } else {
           console.log(response);
@@ -39,11 +40,12 @@ export const HomePage = () => {
     const { username, password, platform, description, website } = data;
     await createPassword(platform, username, password, description, website);
   };
+  console.log(dashboard)
   return (
     <>
       <div className={homeCSS.dashboard}>
         <div className={homeCSS.dashboardCard}>
-        {dashboard.totalPassword ? (
+        {dashboard.totalPassword!==null ? (
             <span>{dashboard?.totalPassword}</span>
           ) : (
             <MobileLoader displayProp={"flex"} />
@@ -51,7 +53,7 @@ export const HomePage = () => {
           <span>Total Saved Passwords</span>
         </div>
         <div className={homeCSS.dashboardCard}>
-        {dashboard.totalPassword ? (
+        {dashboard.favourites!==null ? (
             <span>{dashboard?.favourites}</span>
           ) : (
             <MobileLoader displayProp={"flex"} />
