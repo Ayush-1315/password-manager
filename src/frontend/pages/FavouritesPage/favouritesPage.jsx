@@ -116,7 +116,6 @@ export const FavouritesPage = () => {
       setEditFormData(null);
     }
   };
-  console.log(favourites);
   return (
     <div>
       {favourites.isLoading ? (
