@@ -15,37 +15,44 @@ export const HomePage = () => {
   });
   const { createPassword } = usePassword();
   const { verifyToken, isLogin } = useAuth();
+
+  const getDashBoard=async () => {
+    try {
+      const response = await userDashboardService(
+        isLogin?.user.id,
+        isLogin?.token
+      );
+      if (response?.status === 200) {
+        console.log(response);
+        setDashBoard((prev) => ({ ...prev, ...response?.data.data }));
+      } else {
+        console.log(response);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
   useEffect(() => {
     verifyToken();
-    (async () => {
-      try {
-        const response = await userDashboardService(
-          isLogin?.user.id,
-          isLogin?.token
-        );
-        if (response?.status === 200) {
-          console.log(response)
-          setDashBoard((prev) => ({ ...prev, ...response?.data.data }));
-        } else {
-          console.log(response);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    })();
+    getDashBoard();
     document.title = "Anzen | Home";
     // eslint-disable-next-line
   }, [isLogin]);
   const addPassword = async (data) => {
     const { username, password, platform, description, website } = data;
-    await createPassword(platform, username, password, description, website);
+    try {
+      await createPassword(platform, username, password, description, website);
+      await getDashBoard();
+    } catch (e) {
+      console.log(e);
+    }
   };
-  console.log(dashboard)
+  console.log(dashboard);
   return (
     <>
       <div className={homeCSS.dashboard}>
         <div className={homeCSS.dashboardCard}>
-        {dashboard.totalPassword!==null ? (
+          {dashboard.totalPassword !== null ? (
             <span>{dashboard?.totalPassword}</span>
           ) : (
             <MobileLoader displayProp={"flex"} />
@@ -53,7 +60,7 @@ export const HomePage = () => {
           <span>Total Saved Passwords</span>
         </div>
         <div className={homeCSS.dashboardCard}>
-        {dashboard.favourites!==null ? (
+          {dashboard.favourites !== null ? (
             <span>{dashboard?.favourites}</span>
           ) : (
             <MobileLoader displayProp={"flex"} />

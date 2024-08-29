@@ -47,11 +47,11 @@ export const BrowsePasswordPage = () => {
     (async () => await passwordDispatch({ type: "SEARCH_PAGE", payload: 1 }))();
     document.title = `${isLogin?.user?.username} | Passwords`;
     setPages(() =>
-      totalPasswords / 16 === 0
-        ? totalPasswords / 16
-        : Math.floor(totalPasswords / 16) + 1
+      totalPasswords / 12 === 0
+        ? totalPasswords / 12
+        : Math.floor(totalPasswords / 12) + 1
     );
-    totalPagesRef.current = Math.ceil(totalPasswords / 16);
+    totalPagesRef.current = Math.ceil(totalPasswords / 12);
     return () => window.removeEventListener("scroll", handleScroll);
     // eslint-disable-next-line
   }, [isLogin, totalPasswords]);
