@@ -132,10 +132,18 @@ export const PasswordHolder = ({
         </div>
         <div className={passwordHolderCSS.flipCardBack}>
           <>
-          <p>Your Password is</p>
-          <p id={`password${_id}`}>{viewPassword}</p>
+            <p>Your Password is</p>
+            <p id={`password${_id}`}>{viewPassword}</p>
           </>
-          <button onClick={()=>copyTextFromDiv(`password${_id}`)} className={passwordHolderCSS.copyBtn}><i className="fa-regular fa-copy"></i></button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              copyTextFromDiv(`password${_id}`);
+            }}
+            className={passwordHolderCSS.copyBtn}
+          >
+            <i className="fa-regular fa-copy"></i>
+          </button>
         </div>
       </div>
     </div>
