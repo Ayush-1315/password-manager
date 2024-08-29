@@ -4,6 +4,7 @@ import { useAuth } from "../../context/authContext";
 import { usePassword } from "../../context/passwordContext";
 import { PasswordHolder } from "../../components/password/password";
 import BrowsePasswordCSS from "./browsePasswords.module.css";
+import vault from "../../../assets/vault.png";
 import Loader from "../../components/loader/loader";
 import MobileLoader from "../../components/mobileLoader/mobileLoader";
 import { Modal } from "../../components/modal/modal";
@@ -22,7 +23,7 @@ export const BrowsePasswordPage = () => {
     getPasswordInfo,
     updatePassword,
     addToFavourites,
-    removeFromFavourites
+    removeFromFavourites,
   } = usePassword();
   const { page, passwordSearch } = passwordState;
   const [totalPages, setPages] = useState(0);
@@ -133,30 +134,41 @@ export const BrowsePasswordPage = () => {
   };
   const resetAccPassword = () => setAccPassword({ _id: "", password: "" });
 
-  const toggleEdit =  (passId) => {
-        setEditPassword({id:passId,show:true})
+  const toggleEdit = (passId) => {
+    setEditPassword({ id: passId, show: true });
   };
-  const handleEditPassword=async(password)=>{
-    try{
-      const response=await getPasswordInfo(user?.id,editPassword?.id,password);
-      setEditFormData(response)
-    }catch(e){
+  const handleEditPassword = async (password) => {
+    try {
+      const response = await getPasswordInfo(
+        user?.id,
+        editPassword?.id,
+        password
+      );
+      setEditFormData(response);
+    } catch (e) {
       console.log(e);
+    } finally {
+      setEditPassword({ id: "", show: false });
     }
-    finally{
-      setEditPassword({id:"",show:false});
+  };
+  const onUpdatePassword = async (passwordBody) => {
+    try {
+      const { _id, username, password, platform, website, description } =
+        passwordBody;
+      await updatePassword(
+        _id,
+        platform,
+        password,
+        username,
+        website,
+        description
+      );
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setEditFormData(null);
     }
-  }
-  const onUpdatePassword=async(passwordBody)=>{
-    try{
-      const {_id,username,password,platform,website,description}=passwordBody
-      await updatePassword(_id,platform,password,username,website,description)
-    }catch(e){
-      console.log(e)
-    }finally{
-      setEditFormData(null)
-    }
-  }
+  };
   return (
     <div onScroll={handleScroll}>
       <div className={BrowsePasswordCSS.searchBar}>
@@ -175,29 +187,48 @@ export const BrowsePasswordPage = () => {
         ) : (
           <>
             <div className={BrowsePasswordCSS.page}>
-              {passwordState.passwords.length > 0
-                ? passwordState.passwords.map((password) => (
-                    <PasswordHolder
-                      key={password._id}
-                      {...password}
-                      userId={isLogin?.user?.id}
-                      onDelete={() => handleDelete(password._id)}
-                      onView={(id) => setShowPassword({ id, show: true })}
-                      viewPassword={
-                        password._id === accPassword._id
-                          ? accPassword.password
-                          : ""
-                      }
-                      resetViewPassword={resetAccPassword}
-                      onEdit={pass=>toggleEdit(pass)}
-                      addToFav={(id)=>addToFavourites(id)}
-                      removeFromFav={id=>removeFromFavourites(id)}
-                    />
-                  ))
-                : passwordState.passwords.length === 0 &&
+              {passwordState.passwords.length > 0 ? (
+                passwordState.passwords.map((password) => (
+                  <PasswordHolder
+                    key={password._id}
+                    {...password}
+                    userId={isLogin?.user?.id}
+                    onDelete={() => handleDelete(password._id)}
+                    onView={(id) => setShowPassword({ id, show: true })}
+                    viewPassword={
+                      password._id === accPassword._id
+                        ? accPassword.password
+                        : ""
+                    }
+                    resetViewPassword={resetAccPassword}
+                    onEdit={(pass) => toggleEdit(pass)}
+                    addToFav={(id) => addToFavourites(id)}
+                    removeFromFav={(id) => removeFromFavourites(id)}
+                  />
+                ))
+              ) : (
+                  passwordState.passwords.length === 0 &&
                   passwordSearch.length === 0
-                ? "Get started by creating some passwords..."
-                : "Nothing matched your search"}
+                ) ? (
+                <div>
+                  <div className={BrowsePasswordCSS.vaultContainer}>
+                    <img src={vault} alt="Vault" />
+                    <p className={BrowsePasswordCSS.emptyText}>No passwords saved yet!</p>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div className={BrowsePasswordCSS.magnifyingGlassContainer}>
+                    <div className={BrowsePasswordCSS.magnifyingGlass}>
+                      <div className={BrowsePasswordCSS.handle}></div>
+                      <div className={BrowsePasswordCSS.glasss}>
+                        <div className={BrowsePasswordCSS.emptySpace}></div>
+                      </div>
+                    </div>
+                    <p>No match found.</p>
+                  </div>
+                </div>
+              )}
             </div>
             {isLoading && <MobileLoader />}
             {passwordSearch === "" && !(window.screen.width <= 481) && (
@@ -232,7 +263,7 @@ export const BrowsePasswordPage = () => {
           }
         />
       )}
-      {(editPassword.show && !editFormData) && (
+      {editPassword.show && !editFormData && (
         <Modal
           component={
             <VerifyPassword
@@ -247,7 +278,7 @@ export const BrowsePasswordPage = () => {
           }
         />
       )}
-      {editFormData  && (
+      {editFormData && (
         <PasswordForm
           _id={editFormData?._id}
           passwordBody={editFormData}
@@ -255,7 +286,7 @@ export const BrowsePasswordPage = () => {
             setShowPassword({ id: "", show: false });
             setEditFormData(null);
           }}
-          submitData={update=>onUpdatePassword(update)}
+          submitData={(update) => onUpdatePassword(update)}
         />
       )}
     </div>

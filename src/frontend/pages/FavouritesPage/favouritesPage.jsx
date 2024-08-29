@@ -124,32 +124,44 @@ export const FavouritesPage = () => {
         <>
           {" "}
           <div className={favouritesPageCSS.page}>
-            {favourites.data.length > 0
-              ? favourites.data.map((password) => (
-                  <PasswordHolder
-                    key={password._id}
-                    {...password}
-                    isFavourite={true}
-                    userId={isLogin?.user?.id}
-                    onDelete={() => handleDelete(password._id)}
-                    onView={(id) => setShowPassword({ id, show: true })}
-                    viewPassword={
-                      password._id === accPassword._id
-                        ? accPassword.password
-                        : ""
-                    }
-                    resetViewPassword={resetAccPassword}
-                    onEdit={(pass) => toggleEdit(pass)}
-                    removeFromFav={async(id) => {
-                     await removeFromFavourites(id);
-                      setFavouries((prev) => {
-                        const data = prev.data.filter(({ _id }) => _id !== id);
-                        return { ...prev, data };
-                      });
-                    }}
-                  />
-                ))
-              : "Nothing here"}
+            {favourites.data.length > 0 ? (
+              favourites.data.map((password) => (
+                <PasswordHolder
+                  key={password._id}
+                  {...password}
+                  isFavourite={true}
+                  userId={isLogin?.user?.id}
+                  onDelete={() => handleDelete(password._id)}
+                  onView={(id) => setShowPassword({ id, show: true })}
+                  viewPassword={
+                    password._id === accPassword._id ? accPassword.password : ""
+                  }
+                  resetViewPassword={resetAccPassword}
+                  onEdit={(pass) => toggleEdit(pass)}
+                  removeFromFav={async (id) => {
+                    await removeFromFavourites(id);
+                    setFavouries((prev) => {
+                      const data = prev.data.filter(({ _id }) => _id !== id);
+                      return { ...prev, data };
+                    });
+                  }}
+                />
+              ))
+            ) : (
+              <div>
+                <div className={favouritesPageCSS.magnifyingGlassContainer}>
+                  <div className={favouritesPageCSS.magnifyingGlass}>
+                    <div className={favouritesPageCSS.handle}></div>
+                    <div className={favouritesPageCSS.glasss}>
+                      <div className={favouritesPageCSS.emptySpace}></div>
+                    </div>
+                  </div>
+                  <p>
+                  Empty favorites.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </>
       )}
