@@ -4,32 +4,64 @@ import { usePassword } from "../../context/passwordContext";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 
-import homeCSS from "./homePage.module.css"
+import homeCSS from "./homePage.module.css";
+import { userDashboardService } from "../../services/paswordServices";
 export const HomePage = () => {
   const [showForm, setShowForm] = useState(false);
+  const [dashboard, setDashBoard] = useState({
+    totalPassword: 0,
+    favourites: 0,
+  });
   const { createPassword } = usePassword();
-  const { verifyToken } = useAuth();
+  const { verifyToken, isLogin } = useAuth();
   useEffect(() => {
     verifyToken();
+    (async () => {
+      try {
+        const response = await userDashboardService(
+          isLogin?.user.id,
+          isLogin?.token
+        );
+        if (response?.status === 200) {
+          setDashBoard((prev) => ({ ...prev, ...response?.data.data }));
+        } else {
+          console.log(response);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    })();
     document.title = "Anzen | Home";
     // eslint-disable-next-line
-  }, []);
+  }, [isLogin]);
+  console.log(dashboard);
   const addPassword = async (data) => {
-    const { username, password, platform, description,website} = data;
-    await createPassword(platform, username, password, description,website);
+    const { username, password, platform, description, website } = data;
+    await createPassword(platform, username, password, description, website);
   };
   return (
+   <>
+   <div className={homeCSS.dashboard}>
+    <div className={homeCSS.dashboardCard}>
+      <span>{dashboard?.totalPassword}</span>
+      <span>Total Saved Passwords</span>
+    </div>
+    <div className={homeCSS.dashboardCard}>
+      <span>{dashboard?.favourites}</span>
+      <span>Favourites</span>
+    </div>
+   </div>
     <div className={homeCSS.container}>
       <span onClick={() => setShowForm(true)} className={homeCSS.actionCard}>
         <i className="fa-solid fa-user-plus"></i>
         <span>Create Password</span>
       </span>
       <Link to="/browse-passwords" className={homeCSS.actionCard}>
-      <i className="fa-solid fa-binoculars"></i>
+        <i className="fa-solid fa-binoculars"></i>
         <span>Browse Passwords</span>
       </Link>
       <Link to="/favourites" className={homeCSS.actionCard}>
-      <i className="fa-solid fa-star"></i>
+        <i className="fa-solid fa-star"></i>
         <span>Browse Favourites</span>
       </Link>
       {showForm && (
@@ -42,5 +74,6 @@ export const HomePage = () => {
         />
       )}
     </div>
+   </>
   );
 };

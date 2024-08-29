@@ -196,3 +196,20 @@ export const getAllFavouritesService=async(userId,token)=>{
     throw e;
   }
 }
+
+export const userDashboardService=async(userId,token)=>{
+  try{
+    const response=await axios.get(
+      `${BASE_URL}/passwords/dashboard/${userId}`,
+      {
+        headers:{
+          authorization:token
+        }
+      }
+    )
+    return response;
+  }
+  catch(e){
+    throw e
+  }
+}

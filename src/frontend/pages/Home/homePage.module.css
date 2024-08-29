@@ -15,10 +15,42 @@
 }
 .actionCard{
     outline: 1px solid #FFFFFF;
-    width: 50%;
     padding: 2rem;
     border-radius: 16px;
     cursor: pointer;
+}
+.actionCard i{
+    display: block;
+    margin-bottom: 1rem;
+}
+.actionCard:first-child:hover{
+    color:#41af4d;
+    outline:1px solid #41af4d;
+}
+.actionCard:last-child:hover{
+    color:#1a75ff;
+    outline:1px solid #1a75ff;
+}
+.actionCard:nth-child(2):hover{
+    color:#be504d;
+    outline:1px solid #be504d;
+}
+.dashboard{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 2rem;
+}
+.dashboardCard{
+background-color: #867c7c;
+width: 20%;
+border-radius: 2px;
+padding: 1rem;
+}
+.dashboardCard span:first-child{
+    display: block;
+    font-size: 5rem;
 }
 @media (max-width:481px){
     .container{

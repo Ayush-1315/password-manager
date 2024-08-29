@@ -57,7 +57,7 @@ export const PasswordForm = ({ _id, passwordBody, submitData, closeForm }) => {
     let isValid;
     if (_id) {
       isValid = Object.entries(formData).reduce((acc, curr) => {
-        if (curr[0] !== "description" && curr[0] !== "remindAfterDays" && curr[0]!=="website") {
+        if (curr[0] !== "description" && curr[0] !== "remindAfterDays" && curr[0]!=="website" && curr[0]!=="isFavourite") {
           if (curr[1].trim().length > 0) {
             return acc;
           } else {
